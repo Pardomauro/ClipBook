@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { SpinnerButton } from '@/components/Common/Spinner';
+import { SpinnerButton } from '@/components/Common';
 
 /**
  * Componente para proteger rutas que requieren autenticación

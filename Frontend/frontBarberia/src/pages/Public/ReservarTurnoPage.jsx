@@ -3,12 +3,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getBarberoById } from "@/services/barberoService";
 import { getServicios } from "@/services/servicioService";
 import { getHorariosDisponibles, createTurno } from "@/services/turnoService";
-import { SpinnerButton } from "@/components/Common/Spinner";
+import { SpinnerButton } from "@/components/Common";
 import { Button } from "@/components/ui/button";
 import { formatearFecha, esDiaLaboral, formatearFechaISO } from "@/utils/dateHelpers";
 
 // Componentes
-import { BarberoInfoHeader } from "@/components/Barberos";
+import { BarberoInfoHeader } from "@/components/Usuario";
 import {
     CalendarioSelector,
     ServiciosSelector,
@@ -258,7 +258,7 @@ export default function ReservarTurnoPage() {
 
                 {/* Botones de acción */}
                 <div className="flex justify-between">
-                    <Button variant="outline" onClick={() => navigate('/')} className="border-zinc-700 text-zinc-600 hover:bg-zinc-900 hover:text-zinc-100">
+                    <Button variant="outline" onClick={() => navigate('/')} className="bg-gray-400/70 border-zinc-900 text-zinc-800 hover:bg-gray-600 hover:text-zinc-100">
                         Cancelar
                     </Button>
                     

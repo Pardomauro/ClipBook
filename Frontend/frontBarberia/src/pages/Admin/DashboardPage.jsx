@@ -1,9 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Users, Scissors, Calendar } from 'lucide-react';
-import { AdminLayout } from '@/components/Admin';
-import { StatCard } from '@/components/Common';
-import { ClientsChart } from '@/components/Charts';
+import { AdminLayout, ClientsChart, StatCard } from '@/components/Admin';
 import { getTurnosPorDia } from '@/services/turnoService';
 import { getBarbero } from '@/services/authService';
 import toast from 'react-hot-toast';

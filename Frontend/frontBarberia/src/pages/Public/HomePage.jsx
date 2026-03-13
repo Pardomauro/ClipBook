@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { BarberoCard } from "@/components/Barberos";
+import { BarberoCard } from "@/components/Usuario";
 import { getBarberos } from "@/services/barberoService";
-import { SpinnerButton } from "@/components/Common/Spinner";
+import { SpinnerButton } from "@/components/Common";
 import { useAuth } from "@/context/AuthContext";
 
 

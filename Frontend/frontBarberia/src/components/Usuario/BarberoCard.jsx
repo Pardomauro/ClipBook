@@ -18,7 +18,7 @@ import { IMAGEN_BARBERO_DEFAULT } from '@/utils/constants';
  * @param {object} barbero - Datos del barbero
  * @param {function} onReservar - Callback cuando se hace clic en "Reservar turno"
  */
-export function BarberoCard({ barbero, onReservar }) {
+export default function BarberoCard({ barbero, onReservar }) {
   
   // Normalizar la imagen del barbero (corregir rutas incorrectas del backend)
   const normalizarImagenUrl = (url) => {

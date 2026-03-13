@@ -167,14 +167,14 @@ export default function PerfilPage() {
                     <Card className="border-zinc-700/80 bg-zinc-900/95 shadow-xl shadow-black/30">
                         <form onSubmit={handleActualizarPerfil}>
                             <CardHeader>
-                                <CardTitle className="text-zinc-100">Información Personal</CardTitle>
-                                <CardDescription className="text-zinc-400">
+                                <CardTitle className="text-zinc-100">Información Personal </CardTitle>
+                                <CardDescription className="text-zinc-400 mt-1">
                                     Actualiza tus datos de contacto y perfil
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="nombre_completo" className="text-zinc-300">Nombre Completo *</Label>
+                                    <Label htmlFor="nombre_completo" className="text-zinc-300 mt-2">Nombre Completo *</Label>
                                     <Input
                                         id="nombre_completo"
                                         value={formPerfil.nombre_completo}
@@ -276,13 +276,13 @@ export default function PerfilPage() {
                         <form onSubmit={handleCambiarPassword}>
                             <CardHeader>
                                 <CardTitle className="text-zinc-100">Cambiar Contraseña</CardTitle>
-                                <CardDescription className="text-zinc-400">
+                                <CardDescription className="text-zinc-400 mt-1">
                                     Actualiza tu contraseña de acceso
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="passwordActual" className="text-zinc-300">Contraseña Actual *</Label>
+                                    <Label htmlFor="passwordActual" className="text-zinc-300 mt-2">Contraseña Actual *</Label>
                                     <Input
                                         id="passwordActual"
                                         type="password"

@@ -136,36 +136,40 @@ export default function AgregarBarberoDialog({ onBarberoCreado }) {
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogTrigger asChild>
-                <Button className="bg-gray-400/80 text-gray-900 hover:bg-gray-500">
+                <Button 
+                    variant="outline" 
+                    className="bg-zinc-900 hover:bg-zinc-800 text-zinc-100 border-zinc-700/80 h-9 px-3"
+                >
                     <Plus className="h-4 w-4 md:h-3 md:w-3 mr-0" />
                     Agregar Barbero
                 </Button>
             </DialogTrigger>
             
-            <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+            <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto border-zinc-700/80 bg-zinc-900/95">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
-                        <DialogTitle>Agregar Nuevo Barbero</DialogTitle>
-                        <DialogDescription>
+                        <DialogTitle className="text-zinc-100">Agregar Nuevo Barbero</DialogTitle>
+                        <DialogDescription className="text-zinc-400">
                             Completa los datos del nuevo barbero. Los campos marcados con * son obligatorios.
                         </DialogDescription>
                     </DialogHeader>
                     
                     <div className="grid gap-4 py-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="nombre_completo">Nombre Completo *</Label>
+                            <Label htmlFor="nombre_completo" className="text-zinc-300">Nombre Completo *</Label>
                             <Input
                                 id="nombre_completo"
                                 value={formData.nombre_completo}
                                 onChange={(e) => setFormData({...formData, nombre_completo: e.target.value})}
                                 placeholder="Ej: Juan Pérez"
                                 required
+                                className="border-zinc-700 bg-zinc-950/50 text-zinc-100 placeholder:text-zinc-500"
                             />
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email *</Label>
+                                <Label htmlFor="email" className="text-zinc-300">Email *</Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -173,11 +177,12 @@ export default function AgregarBarberoDialog({ onBarberoCreado }) {
                                     onChange={(e) => setFormData({...formData, email: e.target.value})}
                                     placeholder="juan@ejemplo.com"
                                     required
+                                    className="border-zinc-700 bg-zinc-950/50 text-zinc-100 placeholder:text-zinc-500"
                                 />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="celular">Celular *</Label>
+                                <Label htmlFor="celular" className="text-zinc-300">Celular *</Label>
                                 <Input
                                     id="celular"
                                     type="tel"
@@ -185,12 +190,13 @@ export default function AgregarBarberoDialog({ onBarberoCreado }) {
                                     onChange={(e) => setFormData({...formData, celular: e.target.value})}
                                     placeholder="Ej: +54 11 1234-5678"
                                     required
+                                    className="border-zinc-700 bg-zinc-950/50 text-zinc-100 placeholder:text-zinc-500"
                                 />
                             </div>
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="password">Contraseña *</Label>
+                            <Label htmlFor="password" className="text-zinc-300">Contraseña *</Label>
                             <Input
                                 id="password"
                                 type="password"
@@ -199,56 +205,59 @@ export default function AgregarBarberoDialog({ onBarberoCreado }) {
                                 placeholder="Mínimo 6 caracteres"
                                 required
                                 minLength={6}
+                                className="border-zinc-700 bg-zinc-950/50 text-zinc-100 placeholder:text-zinc-500"
                             />
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-xs text-zinc-400">
                                 La contraseña debe tener al menos 6 caracteres
                             </p>
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="direccion">Dirección</Label>
+                            <Label htmlFor="direccion" className="text-zinc-300">Dirección</Label>
                             <Input
                                 id="direccion"
                                 value={formData.direccion}
                                 onChange={(e) => setFormData({...formData, direccion: e.target.value})}
                                 placeholder="Calle 123, Ciudad"
+                                className="border-zinc-700 bg-zinc-950/50 text-zinc-100 placeholder:text-zinc-500"
                             />
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="imagen">Imagen del Barbero</Label>
+                            <Label htmlFor="imagen" className="text-zinc-300">Imagen del Barbero</Label>
                             <Tabs defaultValue="url" className="w-full">
-                                <TabsList className="grid w-full grid-cols-2">
-                                    <TabsTrigger value="url">
+                                <TabsList className="grid w-full grid-cols-2 bg-zinc-950/60 border border-zinc-700">
+                                    <TabsTrigger value="url" className="text-zinc-100 data-[state=active]:bg-zinc-800">
                                         <LinkIcon className="h-4 w-4 mr-2" />
                                         URL
                                     </TabsTrigger>
-                                    <TabsTrigger value="upload">
+                                    <TabsTrigger value="upload" className="text-zinc-100 data-[state=active]:bg-zinc-800">
                                         <Upload className="h-4 w-4 mr-2" />
                                         Subir Archivo
                                     </TabsTrigger>
                                 </TabsList>
                                 
-                                <TabsContent value="url" className="space-y-2">
+                                <TabsContent value="url" className="space-y-2 mt-3">
                                     <Input
                                         type="url"
                                         value={formData.imagen_url.startsWith('data:') ? '' : formData.imagen_url}
                                         onChange={(e) => handleImagenURL(e.target.value)}
                                         placeholder="https://ejemplo.com/imagen.jpg"
+                                        className="border-zinc-700 bg-zinc-950/50 text-zinc-100 placeholder:text-zinc-500"
                                     />
-                                    <p className="text-xs text-muted-foreground">
+                                    <p className="text-xs text-zinc-400">
                                         Ingresa la URL de una imagen desde internet
                                     </p>
                                 </TabsContent>
                                 
-                                <TabsContent value="upload" className="space-y-2">
+                                <TabsContent value="upload" className="space-y-2 mt-3">
                                     <Input
                                         type="file"
                                         accept="image/*"
                                         onChange={handleImagenArchivo}
-                                        className="cursor-pointer"
+                                        className="cursor-pointer border-zinc-700 bg-zinc-950/50 text-zinc-100 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-zinc-800 file:text-zinc-100 hover:file:bg-zinc-700"
                                     />
-                                    <p className="text-xs text-muted-foreground">
+                                    <p className="text-xs text-zinc-400">
                                         Selecciona una imagen desde tu dispositivo (máx. 2MB)
                                     </p>
                                 </TabsContent>
@@ -257,7 +266,7 @@ export default function AgregarBarberoDialog({ onBarberoCreado }) {
                             {/* Vista previa de la imagen */}
                             {previsualizacionImagen && (
                                 <div className="mt-2 flex justify-center">
-                                    <div className="relative w-24 h-24 rounded-lg overflow-hidden border-2 border-border">
+                                    <div className="relative w-24 h-24 rounded-lg overflow-hidden border-2 border-zinc-700">
                                         <img 
                                             src={previsualizacionImagen} 
                                             alt="Vista previa" 
@@ -273,23 +282,29 @@ export default function AgregarBarberoDialog({ onBarberoCreado }) {
                                 id="activo"
                                 checked={formData.activo}
                                 onCheckedChange={(checked) => setFormData({...formData, activo: checked})}
+                                className="data-[state=checked]:bg-emerald-600"
                             />
-                            <Label htmlFor="activo" className="cursor-pointer">
+                            <Label htmlFor="activo" className="cursor-pointer text-zinc-300">
                                 Barbero activo
                             </Label>
                         </div>
                     </div>
                     
-                    <DialogFooter>
+                    <DialogFooter className="border-t border-zinc-800 pt-4">
                         <Button 
                             type="button" 
                             variant="outline" 
                             onClick={() => setOpen(false)}
                             disabled={guardando}
+                            className="bg-gray-400/70 border-zinc-900 text-zinc-800 hover:bg-gray-600 hover:text-zinc-100"
                         >
                             Cancelar
                         </Button>
-                        <Button type="submit" disabled={guardando}>
+                        <Button 
+                            type="submit" 
+                            disabled={guardando}
+                            className="bg-gray-400/70 text-zinc-900 hover:bg-gray-600 hover:text-zinc-100 disabled:opacity-50"
+                        >
                             {guardando ? 'Creando...' : 'Crear Barbero'}
                         </Button>
                     </DialogFooter>

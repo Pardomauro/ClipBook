@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import { AdminLayout } from '@/components/Admin';
-import { ClientsChart } from '@/components/Charts';
+import { AdminLayout, ClientsChart, StatCard } from '@/components/Admin';
 import { TrendingUp, TrendingDown, DollarSign, Clock, Users, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { StatCard } from '@/components/Common';
-import { SpinnerButton } from '@/components/Common/Spinner';
+import { SpinnerButton } from '@/components/Common';
 import { Badge } from '@/components/ui/badge';
 import { getEstadisticasIngresosMes, getEstadisticasSemana, getClientesUnicosBarbero } from '@/services/turnoService';
 import { getBarbero } from '@/services/authService';
