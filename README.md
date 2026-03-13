@@ -103,6 +103,7 @@ AppBarberia/
         │   ├── components/ # Componentes reutilizables
         │   ├── services/   # Servicios API
         │   └── context/    # Context API (Auth)
+        |   └── utils/      # Utilidades
         └── package.json
 ```
 
