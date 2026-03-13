@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { AdminLayout, ServicioCard, AgregarServicioDialog } from '@/components/Admin';
+import { AdminLayout, ServicioCard } from '@/components/Admin';
+import AgregarServicioDialog from '@/components/Admin/Servicios/AgregarServicioDialog';
+import EditarServicioDialog from '@/components/Admin/Servicios/EditarServicioDialog';
 import { Scissors } from 'lucide-react';
 import { Spinner } from '@/components/ui/spinner';
 import { getServicios, cambiarEstadoServicio } from '@/services/servicioService';
@@ -12,6 +14,8 @@ import toast from 'react-hot-toast';
 export default function ServiciosPage() {
     const [servicios, setServicios] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [servicioEditar, setServicioEditar] = useState(null);
+    const [openEditDialog, setOpenEditDialog] = useState(false);
     const [cambiandoEstado, setCambiandoEstado] = useState({});
 
     useEffect(() => {
@@ -53,6 +57,18 @@ export default function ServiciosPage() {
         }
     };
 
+    const handleAbrirDialogoEditar = (servicio) => {
+        setServicioEditar(servicio);
+        setOpenEditDialog(true);
+    };
+
+    const handleCerrarDialogoEditar = (isOpen) => {
+        setOpenEditDialog(isOpen);
+        if (!isOpen) {
+            setServicioEditar(null);
+        }
+    };
+
     if (loading) {
         return (
             <AdminLayout title="Gestión de Servicios" subtitle="Administrar servicios ofrecidos">
@@ -73,6 +89,16 @@ export default function ServiciosPage() {
                 <AgregarServicioDialog onServicioGuardado={cargarServicios} />
             </div>
 
+            {/* Diálogo para editar servicio */}
+            {servicioEditar && (
+                <EditarServicioDialog
+                    servicio={servicioEditar}
+                    open={openEditDialog}
+                    onOpenChange={handleCerrarDialogoEditar}
+                    onServicioActualizado={cargarServicios}
+                />
+            )}
+
             {servicios.length === 0 ? (
                 <div className="text-center py-12 bg-zinc-900/50 rounded-xl border border-zinc-800">
                     <Scissors className="h-12 w-12 mx-auto text-zinc-500 mb-4" />
@@ -87,6 +113,7 @@ export default function ServiciosPage() {
                         <ServicioCard
                             key={servicio.servicio_id}
                             servicio={servicio}
+                            onEditar={handleAbrirDialogoEditar}
                             onCambiarEstado={handleCambiarEstado}
                             cambiandoEstado={cambiandoEstado[servicio.servicio_id]}
                         />

@@ -1,16 +1,19 @@
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { DollarSign, Clock, Scissors } from "lucide-react";
+import { DollarSign, Clock, Scissors, Edit } from "lucide-react";
 
 /**
  * Card individual de servicio con información y acciones
  * @param {Object} servicio - Datos del servicio
+ * @param {Function} onEditar - Callback para editar el servicio
  * @param {Function} onCambiarEstado - Callback para cambiar el estado activo/inactivo
  * @param {Boolean} cambiandoEstado - Flag para deshabilitar el switch mientras cambia el estado
  */
 export default function ServicioCard({ 
     servicio, 
+    onEditar,
     onCambiarEstado, 
     cambiandoEstado = false 
 }) {
@@ -56,7 +59,7 @@ export default function ServicioCard({
                 </div>
             </CardContent>
 
-            <CardFooter className="bg-zinc-950/50 border-t border-zinc-800 flex items-center justify-between">
+            <CardFooter className="bg-zinc-950/50 border-t border-zinc-800 flex items-center justify-between py-4">
                 <div className="flex items-center space-x-2">
                     <Switch
                         checked={servicio.activo}
@@ -68,6 +71,15 @@ export default function ServicioCard({
                         {servicio.activo ? 'Activo' : 'Inactivo'}
                     </span>
                 </div>
+                <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => onEditar(servicio)}
+                    className="text-zinc-300 hover:text-zinc-100 hover:bg-zinc-800"
+                >
+                    <Edit className="h-4 w-4 mr-1" />
+                    Editar
+                </Button>
             </CardFooter>
         </Card>
     );

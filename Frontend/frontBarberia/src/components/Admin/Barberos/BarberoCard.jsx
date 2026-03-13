@@ -70,7 +70,7 @@ export default function BarberoCard({
                 </div>
             </CardContent>
 
-            <CardFooter className="bg-zinc-950/50 border-t border-zinc-800 flex items-center justify-between">
+            <CardFooter className="bg-zinc-950/50 border-t border-zinc-800 flex items-center justify-between py-4">
                 <div className="flex items-center space-x-2">
                     <Switch
                         checked={barbero.activo}
