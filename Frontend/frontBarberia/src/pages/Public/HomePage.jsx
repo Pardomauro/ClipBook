@@ -99,8 +99,7 @@ export default function HomePage() {
                 {/* Header */}
                 <div className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-zinc-100 mb-4">
-                        Bienvenido a nuestra Barbería
-                    </h1>
+                        Bienvenido a Ferpa - Barbershop                    </h1>
                     <p className="text-xl font-light text-zinc-300 max-w-2xl mx-auto">
                         Elige con qué barbero deseas reservar tu turno
                     </p>

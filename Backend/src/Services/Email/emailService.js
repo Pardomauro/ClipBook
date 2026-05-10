@@ -1,6 +1,13 @@
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../../../.env') });
 const { Resend } = require('resend');
 const { format } = require('date-fns');
 const { es } = require('date-fns/locale');
+
+// Debug: Verificar que la API key se cargó correctamente
+if (!process.env.RESEND_API_KEY) {
+    console.warn('⚠️  WARNING: RESEND_API_KEY no está configurada en .env');
+}
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 

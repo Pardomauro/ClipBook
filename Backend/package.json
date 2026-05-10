@@ -4,7 +4,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/app.js"
+    "start": "node src/app.js",
+    "seed": "node src/Seeds/index.js",
+    "seed:barberos": "node src/Seeds/seedBarberos.js"
   },
   "author": "Mauro Pardo",
   "license": "ISC",
