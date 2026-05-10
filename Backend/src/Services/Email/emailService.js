@@ -1,5 +1,5 @@
-const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../../../.env') });
+const path = require('path');
 const { Resend } = require('resend');
 const { format } = require('date-fns');
 const { es } = require('date-fns/locale');
