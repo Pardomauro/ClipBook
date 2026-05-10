@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "concurrently \"npm run backend\" \"npm run dev\" --names \"BACKEND,FRONTEND\" --prefix-colors \"bgBlue.bold,bgGreen.bold\"",
+    "start": "vite preview",
+    "dev:fullstack": "concurrently \"npm run backend\" \"npm run dev\" --names \"BACKEND,FRONTEND\" --prefix-colors \"bgBlue.bold,bgGreen.bold\"",
     "backend": "npm --prefix ../../Backend start",
     "dev": "vite",
     "build": "vite build",
