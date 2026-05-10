@@ -1,117 +1,119 @@
-# 🚀 Configuración de API para Frontend
+# 🚀 Configuración de API para Frontend (Versión Simple)
 
-## Variables de Entorno (Vite)
+## ¿Qué es esto?
 
-Este proyecto usa **Vite**, que requiere el prefijo `VITE_` para exponer variables al cliente.
+Tu frontend necesita saber dónde está el backend (la API). Esto se configura con una variable de entorno.
 
 ---
 
-## 📁 Archivos de Entorno
+## 📁 Archivos
 
-### `.env.development` (Desarrollo Local)
-Usado automáticamente cuando ejecutas `npm run dev`:
+### `.env` (Tu archivo de configuración)
+Este archivo contiene la URL de tu backend:
 
 ```env
 VITE_API_URL=http://localhost:3000/api/v1
 ```
 
-### `.env.production` (Producción)
-Usado cuando haces `npm run build`:
+**⚠️ IMPORTANTE:** Este archivo **NO se sube a GitHub** (está en `.gitignore`)
 
+### `.env.example` (Template de ejemplo)
+Este archivo SÍ se sube a GitHub. Es solo una plantilla para que otros sepan qué variables necesitan.
+
+---
+
+## 🛠️ Configuración paso a paso
+
+### Para Desarrollo Local (tu computadora)
+
+**Ya está listo!** El archivo `.env` ya tiene configurado:
 ```env
-VITE_API_URL=https://tu-backend.up.railway.app/api/v1
+VITE_API_URL=http://localhost:3000/api/v1
 ```
 
+Esto apunta a tu backend local corriendo en el puerto 3000.
+
 ---
 
-## 🔧 Configuración para Deploy
+### Para Producción (Vercel/Netlify)
 
-### Vercel (Recomendado)
+Cuando despliegues tu frontend en Vercel o Netlify, necesitas decirle dónde está tu backend de Railway.
 
-**Opción 1: Variables de Entorno en Vercel**
+#### **Vercel:**
 
-1. Ve a tu proyecto en Vercel → Settings → Environment Variables
-2. Agrega:
+1. Ve a tu proyecto en [vercel.com](https://vercel.com)
+2. Click en **Settings** → **Environment Variables**
+3. Agrega una nueva variable:
    - **Name:** `VITE_API_URL`
-   - **Value:** `https://tu-backend.up.railway.app/api/v1`
-   - **Environment:** Production
+   - **Value:** `https://tu-backend.up.railway.app/api/v1` *(la URL de tu backend en Railway)*
+   - **Environment:** Selecciona **Production**
+4. Click en **Save**
+5. Redeploy tu proyecto
 
-**Opción 2: Archivo `.env.production`**
+#### **Netlify:**
 
-Antes de hacer deploy:
-1. Edita `.env.production` con la URL real de Railway
-2. Commit y push (este archivo SÍ debe estar en el repo)
-
----
-
-### Netlify
-
-1. Ve a Site settings → Build & deploy → Environment
-2. Agrega variable:
+1. Ve a tu sitio en [netlify.com](https://netlify.com)
+2. Click en **Site settings** → **Environment variables**
+3. Click en **Add a variable**
    - **Key:** `VITE_API_URL`
    - **Value:** `https://tu-backend.up.railway.app/api/v1`
+4. Click en **Save**
+5. Redeploy tu sitio
 
 ---
 
-### Railway (Frontend también en Railway)
+## 🔗 ¿Cómo obtener la URL de Railway?
 
-1. Agrega servicio de Frontend en Railway
-2. En Variables, configura:
-```env
-VITE_API_URL=https://tu-backend.up.railway.app/api/v1
-```
+1. Despliega tu backend en Railway (sigue la guía `RAILWAY_DEPLOY.md` del Backend)
+2. Una vez desplegado, Railway te da una URL como:
+   ```
+   https://clipbook-backend-production.up.railway.app
+   ```
+3. Agrégale `/api/v1` al final:
+   ```
+   https://clipbook-backend-production.up.railway.app/api/v1
+   ```
+4. Esta es la URL que usarás en Vercel/Netlify
 
 ---
 
-## ✅ Verificación
+## ✅ Verificar que funciona
 
-**Durante desarrollo:**
+**En desarrollo local:**
 ```bash
 npm run dev
-# Debe usar: http://localhost:3000/api/v1
 ```
-
-**En producción:**
-Abre la consola del navegador y ejecuta:
+Abre la consola del navegador (F12) y escribe:
 ```javascript
 console.log(import.meta.env.VITE_API_URL)
 ```
+Debe mostrar: `http://localhost:3000/api/v1`
 
-Debe mostrar la URL de tu backend en Railway.
-
----
-
-## 🔗 Obtener la URL de Railway
-
-Después de desplegar el Backend en Railway:
-
-1. Ve a tu proyecto en Railway
-2. Selecciona el servicio Backend
-3. En la pestaña "Settings"
-4. Busca "Domains" → "Generate Domain"
-5. Copia la URL: `https://tu-proyecto-production.up.railway.app`
-6. Agrégale el sufijo: `/api/v1`
-
-**URL final:** `https://tu-proyecto-production.up.railway.app/api/v1`
-
----
-
-## ⚠️ Importante
-
-- **NO** agregues `.env.development` o `.env.production` al `.gitignore` (estos SÍ deben estar en el repo)
-- **SÍ** agrega `.env.local` al `.gitignore` (este NO debe estar en el repo)
-- Las variables `VITE_*` son públicas (accesibles en el navegador)
-- Nunca pongas secretos o API keys privadas con el prefijo `VITE_`
+**En producción:**
+Abre tu sitio desplegado, abre la consola (F12) y escribe lo mismo:
+```javascript
+console.log(import.meta.env.VITE_API_URL)
+```
+Debe mostrar la URL de Railway.
 
 ---
 
 ## 🔄 CORS en el Backend
 
-Asegúrate de que el Backend tenga configurado el CORS para aceptar peticiones desde tu frontend:
+Para que tu frontend se pueda comunicar con el backend, configura en Railway (en las variables del **Backend**):
 
-En Railway, configura la variable en el Backend:
 ```env
 FRONTEND_URL=https://tu-frontend.vercel.app
 ```
 
-Esto permite que tu frontend en Vercel/Netlify se comunique con el backend en Railway.
+Esto permite que tu frontend haga peticiones al backend sin errores de CORS.
+
+---
+
+## 📝 Resumen Simple
+
+1. **Desarrollo:** Ya está configurado en `.env`
+2. **Producción:** Agrega `VITE_API_URL` en Vercel/Netlify con la URL de Railway
+3. **Backend:** Agrega `FRONTEND_URL` en Railway con la URL de tu frontend
+
+¡Listo! 🎉
