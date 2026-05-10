@@ -11,7 +11,7 @@ const turnosRoutes = require('./Routes/Turnos/turnosroutes');
 const authRoutes = require('./Routes/Auth/authRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 // ============================================================
 // MIDDLEWARES
