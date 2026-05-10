@@ -7,7 +7,7 @@
     "node": ">=20.19.0"
   },
   "scripts": {
-    "start": "vite preview",
+    "start": "vite preview --host 0.0.0.0 --port $PORT",
     "dev:fullstack": "concurrently \"npm run backend\" \"npm run dev\" --names \"BACKEND,FRONTEND\" --prefix-colors \"bgBlue.bold,bgGreen.bold\"",
     "backend": "npm --prefix ../../Backend start",
     "dev": "vite",
