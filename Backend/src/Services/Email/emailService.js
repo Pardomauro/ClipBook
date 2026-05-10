@@ -1,5 +1,7 @@
-require('dotenv').config({ path: path.join(__dirname, '../../../.env') });
 const path = require('path');
+require('dotenv').config({
+  path: path.join(__dirname, '../../../.env')
+});
 const { Resend } = require('resend');
 const { format } = require('date-fns');
 const { es } = require('date-fns/locale');
@@ -14,10 +16,10 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // Configuración del remitente
 // IMPORTANTE: Con cuenta gratuita de Resend, usar 'onboarding@resend.dev'
 // Para usar tu email, verifica tu dominio en https://resend.com/domains
-const FROM_EMAIL = 'onboarding@resend.dev';
-const BARBERIA_NOMBRE = 'BarberShop';
-const BARBERIA_DIRECCION = 'Av. Principal 123, Ciudad';
-const BARBERIA_TELEFONO = '+54 9 11 1234-5678';
+const FROM_EMAIL = process.env.FROM_EMAIL || 'onboarding@resend.dev';
+const BARBERIA_NOMBRE = process.env.BARBERIA_NOMBRE || 'BarberShop';
+const BARBERIA_DIRECCION = process.env.BARBERIA_DIRECCION || 'Av. Principal 123, Ciudad';
+const BARBERIA_TELEFONO = process.env.BARBERIA_TELEFONO || '+54 9 11 1234-5678';
 
 console.log('📧 Servicio de Email inicializado con FROM_EMAIL:', FROM_EMAIL);
 
