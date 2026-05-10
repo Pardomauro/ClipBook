@@ -1,5 +1,8 @@
 
-const API_BASE_URL = 'http://localhost:3000/api/v1';
+// Configuración de la URL base de la API
+// En desarrollo: usa el archivo .env.development
+// En producción: usa el archivo .env.production
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
 
 /**
  * Función wrapper para hacer peticiones con fetch

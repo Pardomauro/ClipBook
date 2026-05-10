@@ -11,12 +11,19 @@ const turnosRoutes = require('./Routes/Turnos/turnosroutes');
 const authRoutes = require('./Routes/Auth/authRoutes');
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 // ============================================================
 // MIDDLEWARES
 // ============================================================
-app.use(cors());
+// Configuración de CORS
+const corsOptions = {
+    origin: process.env.FRONTEND_URL || '*',
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
+
 // Aumentar límite para permitir imágenes en base64 (10MB)
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
