@@ -17,25 +17,8 @@ const PORT = process.env.PORT || 3000;
 // MIDDLEWARES
 // ============================================================
 // Configuración de CORS
-const allowedOrigins = process.env.FRONTEND_URL 
-    ? process.env.FRONTEND_URL.split(',') 
-    : ['*'];
-
 const corsOptions = {
-    origin: function (origin, callback) {
-        // Permitir requests sin origin (como apps móviles, Postman, etc.)
-        if (!origin) return callback(null, true);
-        
-        // Si FRONTEND_URL es '*', permitir todos
-        if (allowedOrigins.includes('*')) return callback(null, true);
-        
-        // Verificar si el origin está en la lista permitida
-        if (allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('No permitido por CORS'));
-        }
-    },
+    origin: process.env.FRONTEND_URL || '*',
     credentials: true,
     optionsSuccessStatus: 200
 };
