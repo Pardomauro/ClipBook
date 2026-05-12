@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { syncDatabase } = require('./Models/index');
+const sequelize = require('./Config/db');
 
 // Importar rutas
 const clienteRoutes = require('./Routes/Cliente/clienteRoutes');
