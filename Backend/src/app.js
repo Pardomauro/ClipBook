@@ -63,7 +63,7 @@ app.get('/api/v1/admin/fix-imagen-column', async (req, res) => {
 
         // Ejecutar ALTER TABLE para cambiar el tipo de columna
         await sequelize.query(`
-            ALTER TABLE Barberos 
+            ALTER TABLE barberos 
             MODIFY COLUMN imagen_url LONGTEXT
         `);
 
