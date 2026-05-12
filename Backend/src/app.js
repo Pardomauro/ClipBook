@@ -56,36 +56,6 @@ app.get('/api/v1/health', (req, res) => {
 
 
 
-// ENDPOINT TEMPORAL PARA MIGRACIÓN DE IMAGEN_URL
-app.get('/api/v1/admin/fix-imagen-column', async (req, res) => {
-    try {
-        console.log('🔧 Ejecutando migración de columna imagen_url...');
-
-        // Ejecutar ALTER TABLE para cambiar el tipo de columna
-        await sequelize.query(`
-            ALTER TABLE barberos 
-            MODIFY COLUMN imagen_url LONGTEXT
-        `);
-
-        console.log('✅ Columna imagen_url actualizada a LONGTEXT');
-
-        res.status(200).json({
-            success: true,
-            message: 'Migración ejecutada exitosamente',
-            detalle: 'La columna imagen_url ahora soporta imágenes grandes (LONGTEXT)',
-            nota: '⚠️ ELIMINA ESTE ENDPOINT después de usarlo (archivo app.js)'
-        });
-
-    } catch (error) {
-        console.error('❌ Error en migración:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error al ejecutar migración',
-            error: error.message
-        });
-    }
-});
-// ============================================================
 
 // Manejo de rutas no encontradas
 app.use((req, res) => {
