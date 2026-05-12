@@ -72,7 +72,7 @@ Barbero.init({
         }
     },
     imagen_url: {
-        type: DataTypes.TEXT,
+        type: DataTypes.TEXT('long'),
         allowNull: true,
         defaultValue: 'https://via.placeholder.com/300x300.png?text=Barbero',
         validate: {

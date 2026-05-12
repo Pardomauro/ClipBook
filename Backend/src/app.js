@@ -53,112 +53,33 @@ app.get('/api/v1/health', (req, res) => {
     });
 });
 
-// ============================================================
-// ENDPOINT TEMPORAL PARA SEED (ELIMINAR DESPUÉS DE USAR)
-// ============================================================
-app.get('/api/v1/admin/seed-barberos', async (req, res) => {
+
+
+// ENDPOINT TEMPORAL PARA MIGRACIÓN DE IMAGEN_URL
+app.get('/api/v1/admin/fix-imagen-column', async (req, res) => {
     try {
-        const Barbero = require('./Models/Barbero/Barbero');
-        const fs = require('fs');
-        const path = require('path');
+        console.log('🔧 Ejecutando migración de columna imagen_url...');
 
-        console.log('🚀 Ejecutando seed de barberos desde endpoint temporal...');
+        // Ejecutar ALTER TABLE para cambiar el tipo de columna
+        await sequelize.query(`
+            ALTER TABLE Barberos 
+            MODIFY COLUMN imagen_url LONGTEXT
+        `);
 
-        // Función para convertir imagen a base64
-        function imageToBase64(imagePath) {
-            try {
-                const imageBuffer = fs.readFileSync(imagePath);
-                const ext = path.extname(imagePath).slice(1).toLowerCase();
-                const mimeType = ext === 'jpg' ? 'jpeg' : ext;
-                return `data:image/${mimeType};base64,${imageBuffer.toString('base64')}`;
-            } catch (error) {
-                console.error('Error al convertir imagen:', error.message);
-                return null;
-            }
-        }
-
-        // Datos de barberos
-        const barberosIniciales = [
-            {
-                nombre_completo: 'Carlos Martínez',
-                email: 'carlos.martinez@barberia.com',
-                celular: '+54 9 11 1234-5678',
-                direccion: 'Av. Corrientes 1234, Buenos Aires',
-                password: 'barbero123',
-                activo: true,
-                imagenFile: 'martin.jpg'
-            },
-            {
-                nombre_completo: 'Juan Pérez',
-                email: 'juan.perez@barberia.com',
-                celular: '+54 9 11 2345-6789',
-                direccion: 'Calle Florida 567, Buenos Aires',
-                password: 'barbero123',
-                activo: true,
-                imagenFile: 'Jover.jpg'
-            },
-            {
-                nombre_completo: 'Roberto Pardo',
-                email: 'roberto.pardo@barberia.com',
-                celular: '+54 9 11 3456-7890',
-                direccion: 'Av. Santa Fe 890, Buenos Aires',
-                password: 'barbero123',
-                activo: true,
-                imagenFile: '1949_pardo.jpg'
-            }
-        ];
-
-        let barberosCreados = 0;
-        let barberosOmitidos = 0;
-        const resultados = [];
-
-        for (const barberoData of barberosIniciales) {
-            // Verificar si ya existe
-            const existente = await Barbero.findOne({ where: { email: barberoData.email } });
-            
-            if (existente) {
-                barberosOmitidos++;
-                resultados.push(`⏭️ Omitido (ya existe): ${barberoData.nombre_completo}`);
-                continue;
-            }
-
-            // Crear barbero
-            const nuevoBarbero = await Barbero.create({
-                nombre_completo: barberoData.nombre_completo,
-                email: barberoData.email,
-                celular: barberoData.celular,
-                direccion: barberoData.direccion,
-                password: barberoData.password,
-                activo: barberoData.activo
-            });
-
-            barberosCreados++;
-            resultados.push(`✅ Creado: ${barberoData.nombre_completo} (${barberoData.email})`);
-        }
-
-        const totalBarberos = await Barbero.count();
+        console.log('✅ Columna imagen_url actualizada a LONGTEXT');
 
         res.status(200).json({
             success: true,
-            message: 'Seed de barberos ejecutado',
-            resumen: {
-                creados: barberosCreados,
-                omitidos: barberosOmitidos,
-                totalEnDB: totalBarberos
-            },
-            resultados,
-            credenciales: barberosCreados > 0 ? {
-                email: 'carlos.martinez@barberia.com',
-                password: 'barbero123'
-            } : null,
+            message: 'Migración ejecutada exitosamente',
+            detalle: 'La columna imagen_url ahora soporta imágenes grandes (LONGTEXT)',
             nota: '⚠️ ELIMINA ESTE ENDPOINT después de usarlo (archivo app.js)'
         });
 
     } catch (error) {
-        console.error('❌ Error en seed:', error);
+        console.error('❌ Error en migración:', error);
         res.status(500).json({
             success: false,
-            message: 'Error al ejecutar seed',
+            message: 'Error al ejecutar migración',
             error: error.message
         });
     }
