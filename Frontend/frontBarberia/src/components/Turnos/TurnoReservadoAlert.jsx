@@ -35,74 +35,74 @@ export default function TurnoReservadoAlert({ turnoData, onClose }) {
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-            <div className="w-full max-w-2xl bg-zinc-900/95 rounded-lg shadow-2xl shadow-black/50 border border-zinc-700/80 overflow-hidden animate-in zoom-in-95 duration-300">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-2 sm:p-4 animate-in fade-in duration-200">
+            <div className="w-full max-w-[95%] sm:max-w-2xl bg-zinc-900/95 rounded-lg shadow-2xl shadow-black/50 border border-zinc-700/80 overflow-hidden animate-in zoom-in-95 duration-300 max-h-[95vh] overflow-y-auto">
                 {/* Header simple */}
-                <div className="bg-zinc-950/95 p-4 sm:p-6 text-center border-b border-zinc-800">
-                    <div className="flex justify-center mb-3 sm:mb-4">
+                <div className="bg-zinc-950/95 p-3 sm:p-6 text-center border-b border-zinc-800">
+                    <div className="flex justify-center mb-2 sm:mb-4">
                         <div className="bg-emerald-600/20 rounded-full p-2 sm:p-3 ring-2 ring-emerald-600/30">
-                            <CheckCircle2 className="h-8 w-8 sm:h-10 sm:w-10 text-emerald-500" strokeWidth={2} />
+                            <CheckCircle2 className="h-7 w-7 sm:h-10 sm:w-10 text-emerald-500" strokeWidth={2} />
                         </div>
                     </div>
-                    <h2 className="text-lg sm:text-xl font-semibold text-zinc-100 mb-2">
+                    <h2 className="text-base sm:text-xl font-semibold text-zinc-100 mb-1 sm:mb-2">
                         Turno Reservado
                     </h2>
-                    <p className="text-zinc-400 text-sm">
+                    <p className="text-zinc-400 text-xs sm:text-sm">
                         Tu reserva ha sido confirmada
                     </p>
                 </div>
 
                 {/* Contenido con detalles del turno */}
-                <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+                <div className="p-3 sm:p-6 space-y-3 sm:space-y-6">
                     {/* Información del turno */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-4">
                         {/* Fecha */}
-                        <div className="flex items-start gap-2 sm:gap-3 p-3 sm:p-4 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
-                            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-cyan-500/10 flex items-center justify-center ring-1 ring-cyan-500/30 shrink-0">
-                                <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-500" />
+                        <div className="flex items-start gap-2 sm:gap-3 p-2.5 sm:p-4 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
+                            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-cyan-500/10 flex items-center justify-center ring-1 ring-cyan-500/30 shrink-0">
+                                <Calendar className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-cyan-500" />
                             </div>
                             <div className="min-w-0 flex-1">
-                                <p className="text-xs text-zinc-400 mb-1">Fecha</p>
-                                <p className="text-sm font-medium text-zinc-100 capitalize break-words">
+                                <p className="text-[10px] sm:text-xs text-zinc-400 mb-0.5 sm:mb-1">Fecha</p>
+                                <p className="text-xs sm:text-sm font-medium text-zinc-100 capitalize break-words leading-tight">
                                     {formatearFecha(fecha_turno)}
                                 </p>
                             </div>
                         </div>
 
                         {/* Hora */}
-                        <div className="flex items-start gap-2 sm:gap-3 p-3 sm:p-4 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
-                            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-cyan-500/10 flex items-center justify-center ring-1 ring-cyan-500/30 shrink-0">
-                                <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-500" />
+                        <div className="flex items-start gap-2 sm:gap-3 p-2.5 sm:p-4 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
+                            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-cyan-500/10 flex items-center justify-center ring-1 ring-cyan-500/30 shrink-0">
+                                <Clock className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-cyan-500" />
                             </div>
                             <div className="min-w-0 flex-1">
-                                <p className="text-xs text-zinc-400 mb-1">Horario</p>
-                                <p className="text-sm font-medium text-zinc-100">
+                                <p className="text-[10px] sm:text-xs text-zinc-400 mb-0.5 sm:mb-1">Horario</p>
+                                <p className="text-xs sm:text-sm font-medium text-zinc-100">
                                     {hora_inicio} hs
                                 </p>
                             </div>
                         </div>
 
                         {/* Barbero */}
-                        <div className="flex items-start gap-2 sm:gap-3 p-3 sm:p-4 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
-                            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-zinc-700/50 flex items-center justify-center ring-1 ring-zinc-600/30 shrink-0">
-                                <User className="h-4 w-4 sm:h-5 sm:w-5 text-zinc-300" />
+                        <div className="flex items-start gap-2 sm:gap-3 p-2.5 sm:p-4 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
+                            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-zinc-700/50 flex items-center justify-center ring-1 ring-zinc-600/30 shrink-0">
+                                <User className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-zinc-300" />
                             </div>
                             <div className="min-w-0 flex-1">
-                                <p className="text-xs text-zinc-400 mb-1">Barbero</p>
-                                <p className="text-sm font-medium text-zinc-100 break-words">
+                                <p className="text-[10px] sm:text-xs text-zinc-400 mb-0.5 sm:mb-1">Barbero</p>
+                                <p className="text-xs sm:text-sm font-medium text-zinc-100 break-words">
                                     {barbero?.nombre_completo || 'N/A'}
                                 </p>
                             </div>
                         </div>
 
                         {/* Servicio */}
-                        <div className="flex items-start gap-2 sm:gap-3 p-3 sm:p-4 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
-                            <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-zinc-700/50 flex items-center justify-center ring-1 ring-zinc-600/30 shrink-0">
-                                <Scissors className="h-4 w-4 sm:h-5 sm:w-5 text-zinc-300" />
+                        <div className="flex items-start gap-2 sm:gap-3 p-2.5 sm:p-4 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
+                            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-zinc-700/50 flex items-center justify-center ring-1 ring-zinc-600/30 shrink-0">
+                                <Scissors className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-zinc-300" />
                             </div>
                             <div className="min-w-0 flex-1">
-                                <p className="text-xs text-zinc-400 mb-1">Servicio</p>
-                                <p className="text-sm font-medium text-zinc-100 break-words">
+                                <p className="text-[10px] sm:text-xs text-zinc-400 mb-0.5 sm:mb-1">Servicio</p>
+                                <p className="text-xs sm:text-sm font-medium text-zinc-100 break-words">
                                     {servicio?.nombre_servicio || 'N/A'}
                                 </p>
                             </div>
@@ -110,24 +110,24 @@ export default function TurnoReservadoAlert({ turnoData, onClose }) {
                     </div>
 
                     {/* Información del cliente */}
-                    <div className="border-t border-zinc-700/50 pt-4">
-                        <h3 className="text-sm font-semibold text-zinc-300 mb-3">Datos de contacto</h3>
-                        <div className="space-y-2 text-sm">
+                    <div className="border-t border-zinc-700/50 pt-3 sm:pt-4">
+                        <h3 className="text-xs sm:text-sm font-semibold text-zinc-300 mb-2 sm:mb-3">Datos de contacto</h3>
+                        <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                             {cliente?.email && (
                                 <div className="flex items-center gap-2 text-zinc-400">
-                                    <Mail className="h-4 w-4 shrink-0" />
+                                    <Mail className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
                                     <span className="break-all">{cliente.email}</span>
                                 </div>
                             )}
                             {cliente?.celular && (
                                 <div className="flex items-center gap-2 text-zinc-400">
-                                    <Phone className="h-4 w-4 shrink-0" />
+                                    <Phone className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
                                     <span className="break-words">{cliente.celular}</span>
                                 </div>
                             )}
                             {cliente?.direccion && (
                                 <div className="flex items-center gap-2 text-zinc-400">
-                                    <MapPin className="h-4 w-4 shrink-0" />
+                                    <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
                                     <span className="break-words">{cliente.direccion}</span>
                                 </div>
                             )}
@@ -135,10 +135,10 @@ export default function TurnoReservadoAlert({ turnoData, onClose }) {
                     </div>
 
                     {/* Precio total */}
-                    <div className="bg-zinc-800/70 rounded-lg p-3 sm:p-4 border border-zinc-700/50">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                            <span className="text-zinc-300 font-medium text-sm sm:text-base">Total a abonar:</span>
-                            <span className="text-xl sm:text-2xl font-bold text-emerald-500">
+                    <div className="bg-zinc-800/70 rounded-lg p-2.5 sm:p-4 border border-zinc-700/50">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 sm:gap-2">
+                            <span className="text-zinc-300 font-medium text-xs sm:text-base">Total a abonar:</span>
+                            <span className="text-lg sm:text-2xl font-bold text-emerald-500">
                                 {formatearPrecio(precio_final)}
                             </span>
                         </div>
@@ -146,18 +146,18 @@ export default function TurnoReservadoAlert({ turnoData, onClose }) {
 
                     {/* Alert de recordatorio */}
                     <Alert className="bg-zinc-800/30 border-zinc-700/50">
-                        <AlertTitle className="text-zinc-100">Recordatorio</AlertTitle>
-                        <AlertDescription className="text-zinc-400">
+                        <AlertTitle className="text-zinc-100 text-xs sm:text-sm">Recordatorio</AlertTitle>
+                        <AlertDescription className="text-zinc-400 text-[11px] sm:text-sm">
                             Te hemos enviado un email de confirmación. Por favor, llega 5 minutos antes de tu turno.
                         </AlertDescription>
                     </Alert>
                 </div>
 
                 {/* Footer con botón */}
-                <div className="p-4 sm:p-6 pt-0">
+                <div className="p-3 sm:p-6 pt-0">
                     <Button 
                         onClick={onClose}
-                        className="w-full bg-zinc-100 text-zinc-900 hover:bg-white font-medium py-4 sm:py-6 text-sm sm:text-base"
+                        className="w-full bg-zinc-100 text-zinc-900 hover:bg-white font-medium py-3 sm:py-6 text-xs sm:text-base"
                     >
                         Volver al inicio
                     </Button>

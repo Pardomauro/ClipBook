@@ -19,7 +19,7 @@ export default function HomePage() {
                 setLoading(true);
                 // Obtener solo barberos activos
                 const response = await getBarberos({ activo: 'true' });
-                
+
                 // El backend devuelve los datos en response.data
                 setBarberos(response.data || []);
                 setError(null);
@@ -32,7 +32,7 @@ export default function HomePage() {
                 setLoading(false);
             }
         };
-        
+
         fetchBarberos();
     }, []);
 
@@ -70,8 +70,8 @@ export default function HomePage() {
             <div className="min-h-screen flex items-center justify-center bg-zinc-950 px-4">
                 <div className="text-center bg-zinc-900/90 border border-zinc-800 rounded-2xl p-8 shadow-xl shadow-black/40">
                     <p className="text-lg text-red-300 mb-4">Error: {error}</p>
-                    <button 
-                        onClick={() => window.location.reload()} 
+                    <button
+                        onClick={() => window.location.reload()}
                         className="px-4 py-2 bg-zinc-100 text-zinc-900 rounded-lg hover:bg-white transition-colors"
                     >
                         Reintentar
@@ -98,18 +98,30 @@ export default function HomePage() {
             <div className="relative max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-12">
+                    {/* Logo */}
+                    <div className="flex justify-center mb-6">
+                        <img
+                            src="/ferpa-logo.jpeg"
+                            alt="Ferpa Barbershop Logo"
+                            className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 object-contain rounded-2xl shadow-2xl shadow-black/50 ring-2 ring-zinc-800/50 transition-transform hover:scale-105 duration-300"
+                        />
+                    </div>
+
                     <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-zinc-100 mb-4">
-                        Bienvenido a Ferpa - Barbershop                    </h1>
+                        Bienvenido al sistema de Turnos de <br />
+                        <span className="block bg-gradient-to-r from-zinc-100 to-zinc-400 bg-clip-text text-transparent">Ferpa - Barbershop</span>
+
+                    </h1>
                     <p className="text-xl font-light text-zinc-300 max-w-2xl mx-auto">
-                        Elige con qué barbero deseas reservar tu turno
+                        <br />Elige con qué barbero deseas reservar tu turno
                     </p>
                 </div>
 
                 {/* Grid de barberos */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-y-8 gap-x-8">
                     {barberos.map(barbero => (
-                        <BarberoCard 
-                            key={barbero.barbero_id} 
+                        <BarberoCard
+                            key={barbero.barbero_id}
                             barbero={barbero}
                             onReservar={handleReservar}
                         />
