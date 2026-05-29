@@ -19,7 +19,8 @@ import {
     Calendar, 
     UserCircle, 
     BarChart3, 
-    LogOut
+    LogOut,
+    ClipboardPlus
 } from 'lucide-react';
 
 /**
@@ -57,6 +58,11 @@ export default function AdminSidebar() {
             icon: Calendar, 
             label: 'Turnos', 
             path: '/admin/turnos' 
+        },
+        { 
+            icon: ClipboardPlus, 
+            label: 'Agregar Corte', 
+            path: '/admin/agregar-corte' 
         },
         { 
             icon: UserCircle, 

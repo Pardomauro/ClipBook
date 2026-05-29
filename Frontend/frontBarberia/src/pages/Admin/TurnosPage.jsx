@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { AdminLayout } from '@/components/Admin';
 import { CalendarioSelector } from '@/components/Turnos';
-import { Calendar as CalendarIcon, User, Clock, DollarSign, Phone, Mail, X } from 'lucide-react';
+import { Calendar as CalendarIcon, User, Clock, DollarSign, Phone, Mail, X, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Spinner } from '@/components/ui/spinner';
-import { getTurnosByBarbero, cancelarTurno } from '@/services/turnoService';
+import { getTurnosByBarbero, cancelarTurno, actualizarEstadoTurno } from '@/services/turnoService';
 import { getBarbero } from '@/services/authService';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
@@ -21,6 +21,7 @@ export default function TurnosPage() {
     const [turnos, setTurnos] = useState([]);
     const [loading, setLoading] = useState(false);
     const [cancelando, setCancelando] = useState({});
+    const [finalizando, setFinalizando] = useState({});
 
     useEffect(() => {
         if (fecha && fecha instanceof Date && !isNaN(fecha.getTime())) {
@@ -59,6 +60,24 @@ export default function TurnosPage() {
             setLoading(false);
         }
     };
+
+    const handleFinalizarTurno = async (turnoId) => {
+        try {
+            setFinalizando(prev => ({ ...prev, [turnoId]: true }));
+            
+            // Actualizar el estado del turno a 'finalizado'
+            await actualizarEstadoTurno(turnoId, 'finalizado');
+            toast.success('Turno finalizado correctamente');
+            
+            // Recargar los turnos de la fecha actual
+            await cargarTurnosPorFecha(fecha);
+        } catch (error) {
+            console.error('Error al finalizar turno:', error);
+            toast.error(error.message || 'Error al finalizar el turno');
+        } finally {
+            setFinalizando(prev => ({ ...prev, [turnoId]: false }));
+        }
+    }
 
     const handleCancelarTurno = async (turnoId) => {
         try {
@@ -106,7 +125,7 @@ export default function TurnosPage() {
                 <CalendarioSelector
                     fechaSeleccionada={fecha}
                     onFechaChange={setFecha}
-                    disabledDays={deshabilitarFechasPasadas}
+                    //disabledDays={deshabilitarFechasPasadas}
                     titulo="Seleccionar Fecha"
                 />
 
@@ -162,75 +181,112 @@ export default function TurnosPage() {
                                                             Cancelado
                                                         </Badge>
                                                     )}
+                                                    {turno.estado === 'finalizado' && (
+                                                        <Badge 
+                                                            variant="outline" 
+                                                            className="bg-green-900/40 text-green-300 border-green-700/60"
+                                                        >
+                                                            Finalizado
+                                                        </Badge>
+                                                    )}
                                                 </div>
                                             </CardHeader>
                                             <CardContent className="pt-0">
-                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                                                    {/* Cliente */}
-                                                    <div className="flex items-center gap-2 text-zinc-400">
-                                                        <User className="h-4 w-4 shrink-0" />
-                                                        <div>
-                                                            <p className="font-medium text-zinc-100">
-                                                                {turno.cliente?.nombre_completo || 'Sin cliente'}
-                                                            </p>
-                                                            {turno.cliente?.email && (
-                                                                <p className="text-xs flex items-center gap-1 mt-0.5 text-zinc-400">
-                                                                    <Mail className="h-3 w-3" />
-                                                                    {turno.cliente.email}
+                                                <div className="flex gap-4">
+                                                    {/* Información del turno */}
+                                                    <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                                                        {/* Cliente */}
+                                                        <div className="flex items-center gap-2 text-zinc-400">
+                                                            <User className="h-4 w-4 shrink-0" />
+                                                            <div>
+                                                                <p className="font-medium text-zinc-100">
+                                                                    {turno.cliente?.nombre_completo || 'Sin cliente'}
                                                                 </p>
-                                                            )}
-                                                            {turno.cliente?.celular && (
-                                                                <p className="text-xs flex items-center gap-1 mt-0.5 text-zinc-400">
-                                                                    <Phone className="h-3 w-3" />
-                                                                    {turno.cliente.celular}
-                                                                </p>
-                                                            )}
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Servicio */}
-                                                    <div className="flex items-center gap-2 text-zinc-400">
-                                                        <div>
-                                                            <p className="text-xs">Servicio:</p>
-                                                            <p className="font-medium text-zinc-100">
-                                                                {turno.servicio?.nombre_servicio || 'Sin especificar'}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Precio */}
-                                                    <div className="flex items-center gap-2 text-zinc-400">
-                                                        <DollarSign className="h-4 w-4 shrink-0 text-emerald-500" />
-                                                        <div>
-                                                            <p className="text-xs">Precio:</p>
-                                                            <p className="font-semibold text-zinc-100">
-                                                                {formatearPrecio(turno.precio_final)}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Botón Cancelar - Solo si no está cancelado */}
-                                                    {turno.estado !== 'cancelado' && (
-                                                        <div className="flex items-end justify-end md:col-span-1">
-                                                            <Button
-                                                                variant="destructive"
-                                                                size="sm"
-                                                                onClick={() => handleCancelarTurno(turno.turno_id)}
-                                                                disabled={cancelando[turno.turno_id]}
-                                                                className="gap-2 bg-gray-500 hover:bg-gray-600 text-black"
-                                                            >
-                                                                {cancelando[turno.turno_id] ? (
-                                                                    <>
-                                                                        <Spinner className="h-4 w-4" />
-                                                                        Cancelando...
-                                                                    </>
-                                                                ) : (
-                                                                    <>
-                                                                        <X className="h-4 w-4" />
-                                                                        Cancelar Turno
-                                                                    </>
+                                                                {turno.cliente?.email && (
+                                                                    <p className="text-xs flex items-center gap-1 mt-0.5 text-zinc-400">
+                                                                        <Mail className="h-3 w-3" />
+                                                                        {turno.cliente.email}
+                                                                    </p>
                                                                 )}
-                                                            </Button>
+                                                                {turno.cliente?.celular && (
+                                                                    <p className="text-xs flex items-center gap-1 mt-0.5 text-zinc-400">
+                                                                        <Phone className="h-3 w-3" />
+                                                                        {turno.cliente.celular}
+                                                                    </p>
+                                                                )}
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Servicio */}
+                                                        <div className="flex items-center gap-2 text-zinc-400">
+                                                            <div>
+                                                                <p className="text-xs">Servicio:</p>
+                                                                <p className="font-medium text-zinc-100">
+                                                                    {turno.servicio?.nombre_servicio || 'Sin especificar'}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Precio */}
+                                                        <div className="flex items-center gap-2 text-zinc-400">
+                                                            <DollarSign className="h-4 w-4 shrink-0 text-emerald-500" />
+                                                            <div>
+                                                                <p className="text-xs">Precio:</p>
+                                                                <p className="font-semibold text-zinc-100">
+                                                                    {formatearPrecio(turno.precio_final)}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Botones de acción - Alineados a la derecha, uno arriba del otro */}
+                                                    {(turno.estado !== 'finalizado' && turno.estado !== 'cancelado') && (
+                                                        <div className="flex flex-col gap-2 justify-center">
+                                                            {/* Botón Finalizar - Solo si no está finalizado ni cancelado */}
+                                                            {turno.estado !== 'finalizado' && turno.estado !== 'cancelado' && (
+                                                                <Button
+                                                                    variant="success"
+                                                                    size="sm"
+                                                                    onClick={() => handleFinalizarTurno(turno.turno_id)}
+                                                                    disabled={finalizando[turno.turno_id]}
+                                                                    className="gap-2 bg-green-500 hover:bg-green-600 text-black"
+                                                                >
+                                                                    {finalizando[turno.turno_id] ? (
+                                                                        <> 
+                                                                            <Spinner className="h-4 w-4" />
+                                                                            Finalizando...
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            <Check className="h-4 w-4" />
+                                                                            Finalizar
+                                                                        </>
+                                                                    )}
+                                                                </Button>
+                                                            )}
+
+                                                            {/* Botón Cancelar - Solo si no está cancelado ni finalizado */}
+                                                            {turno.estado !== 'cancelado' && turno.estado !== 'finalizado' && (
+                                                                <Button
+                                                                    variant="destructive"
+                                                                    size="sm"
+                                                                    onClick={() => handleCancelarTurno(turno.turno_id)}
+                                                                    disabled={cancelando[turno.turno_id]}
+                                                                    className="gap-2 bg-gray-500 hover:bg-gray-600 text-black"
+                                                                >
+                                                                    {cancelando[turno.turno_id] ? (
+                                                                        <>
+                                                                            <Spinner className="h-4 w-4" />
+                                                                            Cancelando...
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            <X className="h-4 w-4" />
+                                                                            Cancelar
+                                                                        </>
+                                                                    )}
+                                                                </Button>
+                                                            )}
                                                         </div>
                                                     )}
                                                 </div>

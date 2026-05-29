@@ -23,7 +23,10 @@ const { enviarEmailConfirmacionTurno, enviarEmailCancelacionTurno } = require('.
  */
 const crearTurno = async (datosTurno) => {
     try {
-        const { cliente_id, cliente, barbero_id, servicio_id, fecha_turno, hora_inicio, precio_final } = datosTurno;
+        const { cliente_id, cliente, barbero_id, servicio_id, fecha_turno, hora_inicio, precio_final, estado } = datosTurno;
+        
+        // Determinar si es un registro de corte ya realizado (estado finalizado)
+        const esCorteRealizado = estado === 'finalizado';
         
         // 1. OBTENER O CREAR CLIENTE
         let clienteId;
@@ -79,65 +82,68 @@ const crearTurno = async (datosTurno) => {
             throw new Error('El servicio no está disponible actualmente');
         }
         
-        // 4. VALIDAR FECHA: No más de X días adelante
-        const fechaTurno = new Date(fecha_turno + 'T00:00:00');
-        const hoy = new Date();
-        hoy.setHours(0, 0, 0, 0);
-        const diferenciaDias = Math.ceil((fechaTurno - hoy) / (1000 * 60 * 60 * 24));
-        
-        if (diferenciaDias > DIAS_MAXIMOS_ADELANTE) {
-            throw new Error(`Solo se pueden agendar turnos con máximo ${DIAS_MAXIMOS_ADELANTE} días de anticipación`);
-        }
-        
-        // 5. VALIDAR DÍA LABORAL (no domingos)
-        const diaSemana = fechaTurno.getDay();
-        if (!esDiaLaboral(diaSemana)) {
-            throw new Error('No se pueden agendar turnos en días no laborales (domingos)');
-        }
-        
-        // 6. VALIDAR ANTICIPACIÓN MÍNIMA (al menos 1 hora)
-        const fechaHoraTurno = new Date(`${fecha_turno}T${hora_inicio}:00`);
-        const ahora = new Date();
-        const diferenciaHoras = (fechaHoraTurno - ahora) / (1000 * 60 * 60);
-        
-        if (diferenciaHoras < ANTICIPACION_MINIMA_HORAS) {
-            throw new Error(`Los turnos deben agendarse con al menos ${ANTICIPACION_MINIMA_HORAS} hora(s) de anticipación`);
-        }
-        
-        // 7. VALIDAR QUE LA HORA ESTÉ EN HORARIO LABORAL
-        if (!estaEnHorarioLaboral(diaSemana, hora_inicio)) {
-            throw new Error('La hora seleccionada no está dentro del horario laboral');
-        }
-        
-        // 8. VALIDAR QUE EL TURNO NO SE EXTIENDA FUERA DEL HORARIO LABORAL
-        const horaFin = calcularHoraFin(hora_inicio, servicio.duracion);
-        if (!estaEnHorarioLaboral(diaSemana, horaFin) && convertirHoraAMinutos(horaFin) > convertirHoraAMinutos(hora_inicio)) {
-            throw new Error('El turno se extendería fuera del horario laboral. Elija un horario más temprano');
-        }
-        
-        // 9. VALIDAR DISPONIBILIDAD DEL BARBERO (no solapamiento)
-        const turnosExistentes = await Turno.findAll({
-            where: {
-                barbero_id,
-                fecha_turno,
-                estado: {
-                    [Op.in]: ['pendiente', 'confirmado'] // Solo turnos activos
-                }
-            },
-            include: [{ model: Servicio, as: 'servicio', attributes: ['duracion'] }]
-        });
-        
-        // Verificar solapamiento con cada turno existente
-        for (const turnoExistente of turnosExistentes) {
-            const horaFinExistente = calcularHoraFin(
-                turnoExistente.hora_inicio, 
-                turnoExistente.servicio.duracion
-            );
+        // Si es un corte ya realizado (finalizado), omitir validaciones de fecha/horario/disponibilidad
+        if (!esCorteRealizado) {
+            // 4. VALIDAR FECHA: No más de X días adelante
+            const fechaTurno = new Date(fecha_turno + 'T00:00:00');
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+            const diferenciaDias = Math.ceil((fechaTurno - hoy) / (1000 * 60 * 60 * 24));
             
-            if (haySolapamiento(hora_inicio, horaFin, turnoExistente.hora_inicio, horaFinExistente)) {
-                throw new Error(
-                    `El barbero ya tiene un turno agendado que se solapa con el horario seleccionado (${turnoExistente.hora_inicio})`
+            if (diferenciaDias > DIAS_MAXIMOS_ADELANTE) {
+                throw new Error(`Solo se pueden agendar turnos con máximo ${DIAS_MAXIMOS_ADELANTE} días de anticipación`);
+            }
+            
+            // 5. VALIDAR DÍA LABORAL (no domingos)
+            const diaSemana = fechaTurno.getDay();
+            if (!esDiaLaboral(diaSemana)) {
+                throw new Error('No se pueden agendar turnos en días no laborales (domingos)');
+            }
+            
+            // 6. VALIDAR ANTICIPACIÓN MÍNIMA (al menos 1 hora)
+            const fechaHoraTurno = new Date(`${fecha_turno}T${hora_inicio}:00`);
+            const ahora = new Date();
+            const diferenciaHoras = (fechaHoraTurno - ahora) / (1000 * 60 * 60);
+            
+            if (diferenciaHoras < ANTICIPACION_MINIMA_HORAS) {
+                throw new Error(`Los turnos deben agendarse con al menos ${ANTICIPACION_MINIMA_HORAS} hora(s) de anticipación`);
+            }
+            
+            // 7. VALIDAR QUE LA HORA ESTÉ EN HORARIO LABORAL
+            if (!estaEnHorarioLaboral(diaSemana, hora_inicio)) {
+                throw new Error('La hora seleccionada no está dentro del horario laboral');
+            }
+            
+            // 8. VALIDAR QUE EL TURNO NO SE EXTIENDA FUERA DEL HORARIO LABORAL
+            const horaFin = calcularHoraFin(hora_inicio, servicio.duracion);
+            if (!estaEnHorarioLaboral(diaSemana, horaFin) && convertirHoraAMinutos(horaFin) > convertirHoraAMinutos(hora_inicio)) {
+                throw new Error('El turno se extendería fuera del horario laboral. Elija un horario más temprano');
+            }
+            
+            // 9. VALIDAR DISPONIBILIDAD DEL BARBERO (no solapamiento)
+            const turnosExistentes = await Turno.findAll({
+                where: {
+                    barbero_id,
+                    fecha_turno,
+                    estado: {
+                        [Op.in]: ['pendiente', 'confirmado'] // Solo turnos activos
+                    }
+                },
+                include: [{ model: Servicio, as: 'servicio', attributes: ['duracion'] }]
+            });
+            
+            // Verificar solapamiento con cada turno existente
+            for (const turnoExistente of turnosExistentes) {
+                const horaFinExistente = calcularHoraFin(
+                    turnoExistente.hora_inicio, 
+                    turnoExistente.servicio.duracion
                 );
+                
+                if (haySolapamiento(hora_inicio, horaFin, turnoExistente.hora_inicio, horaFinExistente)) {
+                    throw new Error(
+                        `El barbero ya tiene un turno agendado que se solapa con el horario seleccionado (${turnoExistente.hora_inicio})`
+                    );
+                }
             }
         }
         
@@ -152,7 +158,7 @@ const crearTurno = async (datosTurno) => {
             fecha_turno,
             hora_inicio: hora_inicio + ':00', // Agregar segundos si no están
             precio_final: precioFinal,
-            estado: 'pendiente'
+            estado: estado || 'pendiente' // Usar estado enviado o por defecto "pendiente"
         });
         
         // 12. DEVOLVER TURNO CON RELACIONES
@@ -164,9 +170,11 @@ const crearTurno = async (datosTurno) => {
             ]
         });
         
-        // 13. ENVIAR EMAIL DE CONFIRMACIÓN (no bloquea la respuesta)
-        enviarEmailConfirmacionTurno(turnoCreado)
-            .catch(error => console.error('⚠️  Error al enviar email de confirmación:', error.message));
+        // 13. ENVIAR EMAIL DE CONFIRMACIÓN solo si es un turno pendiente (no para cortes ya realizados)
+        if (!esCorteRealizado) {
+            enviarEmailConfirmacionTurno(turnoCreado)
+                .catch(error => console.error('⚠️  Error al enviar email de confirmación:', error.message));
+        }
         
         return turnoCreado;
     } catch (error) {
@@ -547,7 +555,8 @@ const obtenerEstadisticasIngresosMes = async (barbero_id = null) => {
             where: whereConditions,
             include: [
                 { model: Servicio, as: 'servicio', attributes: ['nombre_servicio'] },
-                { model: Barbero, as: 'barbero', attributes: ['nombre_completo'] }
+                { model: Barbero, as: 'barbero', attributes: ['nombre_completo'] },
+                { model: Cliente, as: 'cliente', attributes: ['email'] }
             ]
         });
         
@@ -555,6 +564,12 @@ const obtenerEstadisticasIngresosMes = async (barbero_id = null) => {
         const ingresoTotal = turnosFinalizados.reduce((sum, turno) => sum + parseFloat(turno.precio_final || 0), 0);
         const cantidadTurnos = turnosFinalizados.length;
         const promedioIngreso = cantidadTurnos > 0 ? ingresoTotal / cantidadTurnos : 0;
+        
+        // Contar turnos por orden de llegada (clientes con email temporal)
+        const turnosOrdenLlegada = turnosFinalizados.filter(turno => {
+            const email = turno.cliente?.email || '';
+            return email.includes('orden_llegada_') && email.includes('@temporal.com');
+        }).length;
         
         // Ingresos por barbero
         const ingresosPorBarbero = turnosFinalizados.reduce((acc, turno) => {
@@ -581,6 +596,7 @@ const obtenerEstadisticasIngresosMes = async (barbero_id = null) => {
             ingresoTotal,
             cantidadTurnos,
             promedioIngreso,
+            turnosOrdenLlegada,
             ingresosPorBarbero,
             ingresosPorServicio
         };

@@ -18,6 +18,7 @@ import ServiciosPage from '@/pages/Admin/ServiciosPage'
 import TurnosPage from '@/pages/Admin/TurnosPage'
 import PerfilPage from '@/pages/Admin/PerfilPage'
 import EstadisticasPage from '@/pages/Admin/EstadisticasPage'
+import AgregarCorte from '@/pages/Admin/AgregarCorte'
 
 // =============================================
 // COMPONENTE DE PROTECCIÓN DE RUTAS
@@ -61,6 +62,9 @@ function App() {
           
           {/* Gestión de turnos */}
           <Route path="/admin/turnos" element={<TurnosPage />} />
+
+          {/* Agregar corte por orden de llegada */}
+          <Route path="/admin/agregar-corte" element={<AgregarCorte />} />
 
           {/* Mi perfil */}
           <Route path="/admin/perfil" element={<PerfilPage />} />

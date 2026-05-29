@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AdminLayout, ClientsChart, StatCard } from '@/components/Admin';
-import { TrendingUp, TrendingDown, DollarSign, Clock, Users, CheckCircle } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, Clock, Users, CheckCircle, ClipboardList } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { SpinnerButton } from '@/components/Common';
 import { Badge } from '@/components/ui/badge';
@@ -170,10 +170,10 @@ export default function EstadisticasPage() {
                                     icon={CheckCircle}
                                 />
                                 <StatCard
-                                    title="Ingreso Promedio"
-                                    value={formatearPrecio(estadisticasIngresos.promedioIngreso)}
-                                    description="Por turno finalizado"
-                                    icon={TrendingUp}
+                                    title="Orden de Llegada"
+                                    value={estadisticasIngresos.turnosOrdenLlegada || 0}
+                                    description="Turnos sin reserva previa"
+                                    icon={ClipboardList}
                                 />
                                 <StatCard
                                     title="Total Clientes"

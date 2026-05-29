@@ -73,10 +73,15 @@ const crearTurnoValidator = [
         .notEmpty().withMessage('La fecha del turno es requerida')
         .isDate({ format: 'YYYY-MM-DD' })
         .withMessage('La fecha debe estar en formato YYYY-MM-DD')
-        .custom((value) => {
+        .custom((value, { req }) => {
             const fecha = new Date(value + 'T00:00:00');
             const hoy = new Date();
             hoy.setHours(0, 0, 0, 0);
+            
+            // Si el estado es 'finalizado', permitir fechas pasadas (para registrar cortes ya realizados)
+            if (req.body.estado === 'finalizado') {
+                return true;
+            }
             
             if (fecha < hoy) {
                 throw new Error('No se pueden reservar turnos en fechas pasadas');
@@ -93,7 +98,13 @@ const crearTurnoValidator = [
     body('precio_final')
         .optional()
         .isFloat({ min: 0 })
-        .withMessage('El precio debe ser mayor o igual a 0')
+        .withMessage('El precio debe ser mayor o igual a 0'),
+    
+    // Estado opcional (para registrar cortes ya realizados)
+    body('estado')
+        .optional()
+        .isIn(['pendiente', 'confirmado', 'finalizado', 'cancelado'])
+        .withMessage('El estado debe ser: pendiente, confirmado, finalizado o cancelado')
 ];
 
 /**
