@@ -223,7 +223,7 @@ export default function AgregarCorte() {
                             </div>
 
                             {/* Fecha y Hora */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-2 gap-3 sm:gap-4">
                                 <div className="grid gap-2">
                                     <Label htmlFor="fecha_turno" className="text-zinc-300 flex items-center gap-2">
                                         <Calendar className="h-4 w-4" />
@@ -237,7 +237,7 @@ export default function AgregarCorte() {
                                         onChange={handleInputChange}
                                         max={new Date().toISOString().split('T')[0]} // No permitir fechas futuras
                                         required
-                                        className="border-zinc-700 bg-zinc-950/50 text-zinc-100"
+                                        className="border-zinc-700 bg-zinc-950/50 text-zinc-100 w-full block"
                                     />
                                 </div>
 
@@ -253,7 +253,7 @@ export default function AgregarCorte() {
                                         value={formData.hora_inicio}
                                         onChange={handleInputChange}
                                         required
-                                        className="border-zinc-700 bg-zinc-950/50 text-zinc-100"
+                                        className="border-zinc-700 bg-zinc-950/50 text-zinc-100 w-full block"
                                     />
                                 </div>
                             </div>
@@ -278,20 +278,20 @@ export default function AgregarCorte() {
                             </div>
 
                             {/* Botones */}
-                            <div className="flex gap-3 pt-4 border-t border-zinc-800">
+                            <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-zinc-800">
                                 <Button
                                     type="button"
                                     variant="outline"
                                     onClick={resetForm}
                                     disabled={guardando}
-                                    className="flex-1 bg-zinc-800/50 border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100"
+                                    className="w-full sm:flex-1 bg-zinc-800/50 border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-zinc-100"
                                 >
                                     Limpiar Formulario
                                 </Button>
                                 <Button
                                     type="submit"
                                     disabled={guardando}
-                                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50"
+                                    className="w-full sm:flex-1 bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50"
                                 >
                                     {guardando ? (
                                         <>
