@@ -68,46 +68,45 @@ export const DIAS_SEMANA = {
 
 // Horarios de atención por día
 export const HORARIOS_LABORALES = {
-    // Lunes a Viernes: Mañana y tarde
+    // Lunes a Jueves: Mañana y tarde
     [DIAS_SEMANA.LUNES]: { 
         rangos: [
-            { inicio: '09:00', fin: '13:00' }, 
-            { inicio: '16:00', fin: '22:00' }
+            { inicio: '10:30', fin: '15:30' }, 
+            { inicio: '17:00', fin: '21:30' }
         ], 
         activo: true 
     },
     [DIAS_SEMANA.MARTES]: { 
         rangos: [
-            { inicio: '09:00', fin: '13:00' }, 
-            { inicio: '16:00', fin: '22:00' }
+            { inicio: '10:30', fin: '15:30' }, 
+            { inicio: '17:00', fin: '21:30' }
         ], 
         activo: true 
     },
     [DIAS_SEMANA.MIERCOLES]: { 
         rangos: [
-            { inicio: '09:00', fin: '13:00' }, 
-            { inicio: '16:00', fin: '22:00' }
+            { inicio: '10:30', fin: '15:30' }, 
+            { inicio: '17:00', fin: '21:30' }
         ], 
         activo: true 
     },
     [DIAS_SEMANA.JUEVES]: { 
         rangos: [
-            { inicio: '09:00', fin: '13:00' }, 
-            { inicio: '16:00', fin: '22:00' }
+            { inicio: '10:30', fin: '15:30' }, 
+            { inicio: '17:00', fin: '21:30' }
         ], 
         activo: true 
     },
+    // Viernes y Sábado: Corrido
     [DIAS_SEMANA.VIERNES]: { 
         rangos: [
-            { inicio: '09:00', fin: '13:00' }, 
-            { inicio: '16:00', fin: '22:00' }
+            { inicio: '10:00', fin: '21:30' }
         ], 
         activo: true 
     },
-    // Sábado: Corrido
     [DIAS_SEMANA.SABADO]: { 
         rangos: [
-            { inicio: '09:00', fin: '20:00' }
+            { inicio: '10:00', fin: '21:30' }
         ], 
         activo: true 
     },

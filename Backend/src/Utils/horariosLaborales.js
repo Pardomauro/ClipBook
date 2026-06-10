@@ -4,15 +4,15 @@
  */
 
 const HORARIOS_LABORALES = {
-    // Lunes (1) a Viernes (5): Mañana y tarde
-    1: { rangos: [{ inicio: '09:00', fin: '13:00' }, { inicio: '16:00', fin: '22:00' }], activo: true },
-    2: { rangos: [{ inicio: '09:00', fin: '13:00' }, { inicio: '16:00', fin: '22:00' }], activo: true },
-    3: { rangos: [{ inicio: '09:00', fin: '13:00' }, { inicio: '16:00', fin: '22:00' }], activo: true },
-    4: { rangos: [{ inicio: '09:00', fin: '13:00' }, { inicio: '16:00', fin: '22:00' }], activo: true },
-    5: { rangos: [{ inicio: '09:00', fin: '13:00' }, { inicio: '16:00', fin: '22:00' }], activo: true },
+    // Lunes (1) a Jueves (4): Mañana y tarde
+    1: { rangos: [{ inicio: '10:30', fin: '16:30' }, { inicio: '17:00', fin: '22:30' }], activo: true },
+    2: { rangos: [{ inicio: '10:30', fin: '16:30' }, { inicio: '17:00', fin: '22:30' }], activo: true },
+    3: { rangos: [{ inicio: '10:30', fin: '16:30' }, { inicio: '17:00', fin: '22:30' }], activo: true },
+    4: { rangos: [{ inicio: '10:30', fin: '16:30' }, { inicio: '17:00', fin: '22:30' }], activo: true },
     
-    // Sábado (6): Corrido
-    6: { rangos: [{ inicio: '09:00', fin: '20:00' }], activo: true },
+    // Viernes (5) y Sábado (6): Corrido
+    5: { rangos: [{ inicio: '10:00', fin: '22:30' }], activo: true },
+    6: { rangos: [{ inicio: '10:00', fin: '22:30' }], activo: true },
     
     // Domingo (0): Cerrado
     0: { rangos: [], activo: false }

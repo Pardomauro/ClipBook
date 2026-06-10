@@ -127,7 +127,7 @@ export default function HomePage() {
 
                     <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-zinc-100 mb-4">
                         Bienvenido al sistema de Turnos de <br />
-                        <span className="block bg-gradient-to-r from-zinc-100 to-zinc-400 bg-clip-text text-transparent">Ferpa - Barbershop</span>
+                        <span className="block bg-gradient-to-r from-zinc-100 to-zinc-400 bg-clip-text text-transparent">Sanchez - Cuts</span>
 
                     </h1>
                     <p className="text-xl font-light text-zinc-300 max-w-2xl mx-auto">
