@@ -18,11 +18,27 @@ const PORT = process.env.PORT || 3000;
 // MIDDLEWARES
 // ============================================================
 // Configuración de CORS
-const corsOptions = {
-    origin: process.env.FRONTEND_URL || '*',
-    credentials: true,
-    optionsSuccessStatus: 200
-};
+const rawOrigins = process.env.CORS_ORIGINS || process.env.FRONTEND_URL || '';
+const allowedOrigins = rawOrigins.split(',').map(s => s.trim()).filter(Boolean);
+
+let corsOptions;
+if (allowedOrigins.length === 0 || allowedOrigins.includes('*')) {
+    // Si no hay orígenes configurados o se permite cualquier origen
+    corsOptions = { origin: true, credentials: true, optionsSuccessStatus: 200 };
+} else {
+    // Función dinámica que valida el Origin exacto (incluye subdominios/puertos)
+    corsOptions = {
+        origin: function (origin, callback) {
+            // allow requests with no origin (like mobile apps or curl)
+            if (!origin) return callback(null, true);
+            if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
+            return callback(new Error('Not allowed by CORS'));
+        },
+        credentials: true,
+        optionsSuccessStatus: 200
+    };
+}
+
 app.use(cors(corsOptions));
 
 // Aumentar límite para permitir imágenes en base64 (10MB)
