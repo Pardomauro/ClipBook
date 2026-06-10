@@ -45,6 +45,17 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Log temporal para diagnosticar solicitudes CORS/Preflight
+app.use((req, res, next) => {
+    if (req.method === 'OPTIONS') {
+        console.log('[CORS] Preflight:', req.method, req.originalUrl, 'Origin:', req.headers.origin);
+    }
+    next();
+});
+
+// Manejar globalmente preflight requests
+app.options('*', cors(corsOptions));
+
 // ============================================================
 // RUTAS
 // ============================================================
