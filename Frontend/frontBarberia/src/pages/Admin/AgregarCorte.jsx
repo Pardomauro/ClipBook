@@ -223,7 +223,7 @@ export default function AgregarCorte() {
                             </div>
 
                             {/* Fecha y Hora */}
-                            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                            <div className="grid grid-cols-1 gap-3 sm:gap-4">
                                 <div className="grid gap-2">
                                     <Label htmlFor="fecha_turno" className="text-zinc-300 flex items-center gap-2">
                                         <Calendar className="h-4 w-4" />
