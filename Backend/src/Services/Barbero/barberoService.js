@@ -1,7 +1,9 @@
 const { Barbero } = require('../../Models/index');
 const { Op } = require('sequelize');
+const cloudinary = require('../../Config/cloudinary');
 
-/**
+
+/** 
  * Servicio de Barberos
  * Contiene toda la lógica de negocio relacionada con barberos
  */
@@ -129,6 +131,17 @@ const crearBarbero = async (datosBarbero) => {
             throw new Error('El email ya está registrado en el sistema');
         }
 
+        // Subir imagen a Cloudinary si se proporciona
+        let urlImagenCloudinary = datosBarbero.imagen_url;
+
+        if (datosBarbero.imagen_url && datosBarbero.imagen_url.startsWith('data:image')) {
+            const resultadoCloudinary = await cloudinary.uploader.upload(datosBarbero.imagen_url, {
+                folder: 'clipbook/barberos',
+                resource_type: 'image'
+            });
+            urlImagenCloudinary = resultadoCloudinary.secure_url;
+        }
+
         // NORMALIZACIÓN: Limpiar y formatear datos
         const datosNormalizados = {
             nombre_completo: datosBarbero.nombre_completo.trim(),
@@ -136,7 +149,7 @@ const crearBarbero = async (datosBarbero) => {
             celular: datosBarbero.celular.trim(),
             password: datosBarbero.password, // Será hasheado por el hook beforeCreate
             direccion: datosBarbero.direccion ? datosBarbero.direccion.trim() : null,
-            imagen_url: datosBarbero.imagen_url || undefined, // Usará el default del modelo
+            imagen_url: urlImagenCloudinary || undefined, // Usará el default del modelo
             activo: datosBarbero.activo !== undefined ? datosBarbero.activo : true
         };
 
@@ -194,7 +207,21 @@ const actualizarBarbero = async (barbero_id, datosActualizados) => {
         if (datosActualizados.direccion) {
             datosActualizados.direccion = datosActualizados.direccion.trim();
         }
-
+        if (datosActualizados.imagen_url) {
+            if (datosActualizados.imagen_url.startsWith('data:image')) {
+                // Nueva imagen base64, subir a Cloudinary
+                const resultado = await cloudinary.uploader.upload(datosActualizados.imagen_url, {
+                    folder: 'clipbook/barberos',
+                    resource_type: 'image'
+                });
+                datosActualizados.imagen_url = resultado.secure_url;
+            }
+            // Si no es base64, es una URL ya válida (no hacer nada)
+        } else {
+            // No se envió imagen_url, mantener la actual
+            delete datosActualizados.imagen_url;
+        }
+        
         await barbero.update(datosActualizados);
 
         // Eliminar password de la respuesta por seguridad
