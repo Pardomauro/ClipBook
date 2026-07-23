@@ -7,6 +7,10 @@ node_modules/
 .env.development
 .env.production
 
+# Configuracion del mail en la carpeta Services
+src/Services/Email/emailService.js
+
+
 # Logs
 logs/
 *.log

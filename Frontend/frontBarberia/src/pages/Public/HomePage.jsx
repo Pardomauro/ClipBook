@@ -97,20 +97,20 @@ export default function HomePage() {
             <div className="pointer-events-none absolute -right-24 top-24 h-72 w-72 rounded-full bg-zinc-700/10 blur-3xl" />
             
             {/* Logos de marca de agua - distribuidos en la página */}
-            <div className="pointer-events-none absolute top-20 left-10 opacity-[0.03] blur-[2px] grayscale">
-                <img src="/sanchezcut-logo.jpeg" alt="" className="w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 object-contain rotate-[-15deg]" />
+            <div className="pointer-events-none absolute top-20 left-10 opacity-15 blur-[0.5px]">
+                <img src="/rey-barber-logo.jpg" alt="" className="w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 object-contain rotate-[-15deg]" />
             </div>
-            <div className="pointer-events-none absolute top-32 right-4 sm:right-16 opacity-[0.04] blur-[1px] grayscale">
-                <img src="/sanchezcut-logo.jpeg" alt="" className="w-24 h-24 sm:w-36 sm:h-36 xl:w-48 xl:h-48 object-contain rotate-[12deg]" />
+            <div className="pointer-events-none absolute top-32 right-4 sm:right-16 opacity-15 blur-[0.5px]">
+                <img src="/rey-barber-logo.jpg" alt="" className="w-24 h-24 sm:w-36 sm:h-36 xl:w-48 xl:h-48 object-contain rotate-[12deg]" />
             </div>
-            <div className="pointer-events-none absolute bottom-32 left-4 sm:left-20 opacity-[0.03] blur-[2px] grayscale">
-                <img src="/sanchezcut-logo.jpeg" alt="" className="w-28 h-28 sm:w-40 sm:h-40 lg:w-56 lg:h-56 object-contain rotate-[8deg]" />
+            <div className="pointer-events-none absolute bottom-32 left-4 sm:left-20 opacity-15 blur-[0.5px]">
+                <img src="/rey-barber-logo.jpg" alt="" className="w-28 h-28 sm:w-40 sm:h-40 lg:w-56 lg:h-56 object-contain rotate-[8deg]" />
             </div>
-            <div className="pointer-events-none absolute bottom-48 right-8 sm:right-12 opacity-[0.04] blur-[1px] grayscale hidden sm:block">
-                <img src="/sanchezcut-logo.jpeg" alt="" className="w-28 h-28 sm:w-32 sm:h-32 xl:w-40 xl:h-40 object-contain rotate-[-20deg]" />
+            <div className="pointer-events-none absolute bottom-48 right-8 sm:right-12 opacity-15 blur-[0.5px] hidden sm:block">
+                <img src="/rey-barber-logo.jpg" alt="" className="w-28 h-28 sm:w-32 sm:h-32 xl:w-40 xl:h-40 object-contain rotate-[-20deg]" />
             </div>
-            <div className="pointer-events-none absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 opacity-[0.02] blur-[3px] grayscale">
-                <img src="/sanchezcut-logo.jpeg" alt="" className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-contain" />
+            <div className="pointer-events-none absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 opacity-5 blur-[0.5px] grayscale">
+                <img src="/rey-barber-logo.jpg" alt="" className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-contain" />
             </div>
 
             <div className="relative max-w-7xl mx-auto">
@@ -119,15 +119,15 @@ export default function HomePage() {
                     {/* Logo */}
                     <div className="flex justify-center mb-6">
                         <img
-                            src="/sanchezcut-logo.jpeg"
-                            alt="Sanchez Cut Logo"
+                            src="/rey-barber-logo.jpg"
+                            alt="El Rey Barber Logo"
                             className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 object-contain rounded-2xl shadow-2xl shadow-black/50 ring-2 ring-zinc-800/50 transition-transform hover:scale-105 duration-300"
                         />
                     </div>
 
                     <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-zinc-100 mb-4">
-                        Bienvenido al sistema de Turnos de <br />
-                        <span className="block bg-gradient-to-r from-zinc-100 to-zinc-400 bg-clip-text text-transparent">Sanchez - Cuts</span>
+                        Bienvenido a la agenda online de <br />
+                        <span className="mb-4 text-3xl font-bold text-heading md:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-600">El Rey Barber</span>
 
                     </h1>
                     <p className="text-xl font-light text-zinc-300 max-w-2xl mx-auto">

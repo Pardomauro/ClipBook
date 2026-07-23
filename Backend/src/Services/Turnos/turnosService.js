@@ -10,7 +10,7 @@ const {
     ANTICIPACION_MINIMA_HORAS,
     DIAS_MAXIMOS_ADELANTE
 } = require('../../Utils/horariosLaborales');
-const { enviarEmailConfirmacionTurno, enviarEmailCancelacionTurno } = require('../Email/emailService');
+const { enviarEmailConfirmacionTurno, enviarEmailCancelacionTurno, enviarEmailNuevoTurnoAdmin } = require('../Email/emailService');
 
 /**
  * Crear un nuevo turno con todas las validaciones de negocio
@@ -170,10 +170,15 @@ const crearTurno = async (datosTurno) => {
             ]
         });
         
-        // 13. ENVIAR EMAIL DE CONFIRMACIÓN solo si es un turno pendiente (no para cortes ya realizados)
+        // 13. ENVIAR EMAILS solo si es un turno pendiente (no para cortes ya realizados)
         if (!esCorteRealizado) {
+            // Email de confirmación al cliente
             enviarEmailConfirmacionTurno(turnoCreado)
                 .catch(error => console.error('⚠️  Error al enviar email de confirmación:', error.message));
+            
+            // Email de notificación al administrador
+            enviarEmailNuevoTurnoAdmin(turnoCreado)
+                .catch(error => console.error('⚠️  Error al enviar email al administrador:', error.message));
         }
         
         return turnoCreado;
