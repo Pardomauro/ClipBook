@@ -70,43 +70,41 @@ export const DIAS_SEMANA = {
 export const HORARIOS_LABORALES = {
     // Lunes a Jueves: Mañana y tarde
     [DIAS_SEMANA.LUNES]: { 
-        rangos: [
-            { inicio: '10:30', fin: '15:30' }, 
-            { inicio: '17:00', fin: '21:30' }
-        ], 
-        activo: true 
+        rangos: [], 
+        activo: false  
     },
     [DIAS_SEMANA.MARTES]: { 
         rangos: [
-            { inicio: '10:30', fin: '15:30' }, 
-            { inicio: '17:00', fin: '21:30' }
+            { inicio: '10:00', fin: '14:00' }, 
+            { inicio: '15:00', fin: '20:00' }
         ], 
         activo: true 
     },
     [DIAS_SEMANA.MIERCOLES]: { 
         rangos: [
-            { inicio: '10:30', fin: '15:30' }, 
-            { inicio: '17:00', fin: '21:30' }
+            { inicio: '10:00', fin: '14:00' }, 
+            { inicio: '15:00', fin: '20:00' }
         ], 
         activo: true 
     },
     [DIAS_SEMANA.JUEVES]: { 
         rangos: [
-            { inicio: '10:30', fin: '15:30' }, 
-            { inicio: '17:00', fin: '21:30' }
+            { inicio: '10:00', fin: '14:00' }, 
+            { inicio: '15:00', fin: '20:00' }
         ], 
         activo: true 
     },
-    // Viernes y Sábado: Corrido
     [DIAS_SEMANA.VIERNES]: { 
         rangos: [
-            { inicio: '10:00', fin: '22:00' }
+            { inicio: '10:00', fin: '14:00' }, 
+            { inicio: '15:00', fin: '20:00' }
         ], 
         activo: true 
     },
     [DIAS_SEMANA.SABADO]: { 
         rangos: [
-            { inicio: '10:00', fin: '22:00' }
+            { inicio: '10:00', fin: '14:00' }, 
+            { inicio: '15:00', fin: '20:00' }
         ], 
         activo: true 
     },
@@ -136,7 +134,7 @@ export const NOMBRES_DIAS = {
  */
 
 // Intervalo de tiempo entre turnos (en minutos)
-export const INTERVALO_TURNOS = 30;
+export const INTERVALO_TURNOS = 60;
 
 // Anticipación mínima para agendar un turno (en horas)
 export const ANTICIPACION_MINIMA_HORAS = 1;

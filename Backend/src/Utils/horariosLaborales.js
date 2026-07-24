@@ -4,22 +4,20 @@
  */
 
 const HORARIOS_LABORALES = {
-    // Lunes (1) a Jueves (4): Mañana y tarde
-    1: { rangos: [{ inicio: '10:30', fin: '16:30' }, { inicio: '17:00', fin: '22:30' }], activo: true },
-    2: { rangos: [{ inicio: '10:30', fin: '16:30' }, { inicio: '17:00', fin: '22:30' }], activo: true },
-    3: { rangos: [{ inicio: '10:30', fin: '16:30' }, { inicio: '17:00', fin: '22:30' }], activo: true },
-    4: { rangos: [{ inicio: '10:30', fin: '16:30' }, { inicio: '17:00', fin: '22:30' }], activo: true },
+    // Martes (2) a Jueves (4): Mañana y tarde
+    2: { rangos: [{ inicio: '10:00', fin: '14:00' }, { inicio: '15:00', fin: '22:00' }], activo: true },
+    3: { rangos: [{ inicio: '10:00', fin: '14:00' }, { inicio: '15:00', fin: '22:00' }], activo: true },
+    4: { rangos: [{ inicio: '10:00', fin: '14:00' }, { inicio: '15:00', fin: '22:00' }], activo: true },
+    5: { rangos: [{ inicio: '10:00', fin: '14:00' }, { inicio: '15:00', fin: '22:00' }], activo: true },
+    6: { rangos: [{ inicio: '10:00', fin: '14:00' }, { inicio: '15:00', fin: '22:00' }], activo: true },
     
-    // Viernes (5) y Sábado (6): Corrido
-    5: { rangos: [{ inicio: '10:00', fin: '22:30' }], activo: true },
-    6: { rangos: [{ inicio: '10:00', fin: '22:30' }], activo: true },
-    
-    // Domingo (0): Cerrado
-    0: { rangos: [], activo: false }
+    // Domingo y Lunes (0/1): Cerrado
+    0: { rangos: [], activo: false },
+    1: { rangos: [], activo: false },
 };
 
 // Intervalo de tiempo entre turnos (en minutos)
-const INTERVALO_TURNOS = 30;
+const INTERVALO_TURNOS = 60;
 
 // Anticipación mínima para agendar un turno (en horas)
 const ANTICIPACION_MINIMA_HORAS = 1;
