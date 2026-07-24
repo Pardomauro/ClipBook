@@ -4,6 +4,8 @@ require('dotenv').config({
     path: path.join(__dirname, '../../../.env')
 });
 
+const dns = require('dns');
+if (dns.setDefaultResultOrder) dns.setDefaultResultOrder('ipv4first');
 
 
 const { format } = require('date-fns');
@@ -21,9 +23,10 @@ const verificarConexion = async () => {
     }
 };
 
-// Configuración dek transportador de Nodemailer
+
+
+// Configuración del transportador de Nodemailer
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
     host: process.env.EMAIL_HOST,
     port: parseInt(process.env.EMAIL_PORT) || 587,
     secure: process.env.EMAIL_SECURE === 'true', // true para 465, false para otros puertos
