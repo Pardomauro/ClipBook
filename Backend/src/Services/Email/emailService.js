@@ -1,5 +1,16 @@
 const nodemailer = require('nodemailer');
 const path = require('path');
+
+// Detectar fetch; usar node-fetch si fetch no está disponible
+let fetchFn = globalThis.fetch;
+if (!fetchFn) {
+    try {
+        fetchFn = require('node-fetch');
+    } catch (e) {
+        fetchFn = null;
+    }
+}
+
 require('dotenv').config({
     path: path.join(__dirname, '../../../.env')
 });
@@ -7,78 +18,122 @@ require('dotenv').config({
 const dns = require('dns');
 if (dns.setDefaultResultOrder) dns.setDefaultResultOrder('ipv4first');
 
-
 const { format } = require('date-fns');
 const { es } = require('date-fns/locale');
 
-// Función para verificar la conexión del transportador de Nodemailer
-const verificarConexion = async () => {
-    try {
-        await transporter.verify();
-        console.log('✅ Servicio de email configurado correctamente');
-        return true;
-    } catch (error) {
-        console.error('❌ Error al verificar el servicio de email:', error.message);
-        return false;
-    }
-};
+// Configuración del remitente predeterminado
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'ponce.ap.332@gmail.com';
+const BARBERIA_NOMBRE = process.env.BARBERIA_NOMBRE || 'El Rey Barber';
+const BARBERIA_DIRECCION = process.env.BARBERIA_DIRECCION || 'Av. Bulnes 2676';
+const BARBERIA_TELEFONO = process.env.BARBERIA_TELEFONO || '351 740-4322';
 
-
-
-// Configuración del transportador de Nodemailer
+// Configuración opcional del transportador de Nodemailer (Fallback)
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: parseInt(process.env.EMAIL_PORT) || 587,
-    secure: process.env.EMAIL_SECURE === 'false', // true para 465, false para otros puertos
-    family: 4, // <-- Le prohíbe explícitamente tocar IPv6
+    secure: process.env.EMAIL_SECURE === 'true',
+    family: 4,
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     },
-    tls: {
-        rejectUnauthorized: false,
-        minVersion: 'TLSv1.2'
-    },
-    connectionTimeout: 30000, // 30 segundos (aumentado)
-    greetingTimeout: 30000,   // 30 segundos (aumentado)
-    socketTimeout: 30000,     // 30 segundos (aumentado)
-    pool: true,               // Usar pool de conexiones
-    maxConnections: 5,        // Máximo 5 conexiones simultáneas
-    maxMessages: 100          // Máximo 100 mensajes por conexión
+    tls: { rejectUnauthorized: false, minVersion: 'TLSv1.2' },
+    connectionTimeout: 10000
 });
 
-// Función para enviar correos electrónicos con reintentos
+// Verificar servicio al arrancar (Diferencia si usas Brevo o Nodemailer)
+const verificarConexion = async () => {
+    if (process.env.EMAIL_PROVIDER === 'brevo' || process.env.BREVO_API_KEY) {
+        console.log('✅ Servicio de email configurado mediante Brevo (API HTTP)');
+        return true;
+    }
+    try {
+        await transporter.verify();
+        console.log('✅ Servicio SMTP (Nodemailer) verificado correctamente');
+        return true;
+    } catch (error) {
+        console.warn('⚠️ SMTP no disponible. Se intentará usar API de Brevo en envíos:', error.message);
+        return false;
+    }
+};
+
+// Enviar vía Brevo (API HTTP - Sin bloqueo de puertos ni IPv6)
+const enviarViaBrevo = async ({ destinatario, asunto, contenidoHTML }) => {
+    if (!process.env.BREVO_API_KEY) throw new Error('BREVO_API_KEY no está configurada en las variables de entorno');
+    
+    const sender = {
+        name: process.env.BREVO_SENDER_NAME || BARBERIA_NOMBRE,
+        email: process.env.BREVO_SENDER_EMAIL || process.env.EMAIL_USER || ADMIN_EMAIL
+    };
+
+    if (!fetchFn) throw new Error('Fetch no disponible. Instala node-fetch o actualiza a Node 18+.');
+
+    const body = {
+        sender,
+        to: [{ email: destinatario }],
+        subject: asunto,
+        htmlContent: contenidoHTML
+    };
+
+    const res = await fetchFn('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+            'api-key': process.env.BREVO_API_KEY,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    });
+
+    if (!res.ok) {
+        const text = await (res.text ? res.text() : res);
+        throw new Error(`Brevo API Error ${res.status}: ${text}`);
+    }
+
+    console.log(`✅ Email enviado exitosamente vía Brevo a ${destinatario}`);
+    return res;
+};
+
+// Función principal de envío
 const enviarCorreo = async ({ destinatario, asunto, contenidoHTML }, intentos = 3) => {
+    // Si la variable EMAIL_PROVIDER es 'brevo' o existe BREVO_API_KEY, envía directo por Brevo
+    if ((process.env.EMAIL_PROVIDER === 'brevo' || !process.env.EMAIL_HOST) && process.env.BREVO_API_KEY) {
+        return await enviarViaBrevo({ destinatario, asunto, contenidoHTML });
+    }
+
+    // Fallback a SMTP / Nodemailer si está configurado
     for (let i = 0; i < intentos; i++) {
         try {
             const opcionesCorreo = {
-                from: `"El Rey Barber" <${process.env.EMAIL_USER}>`,
+                from: `"${BARBERIA_NOMBRE}" <${process.env.EMAIL_USER}>`,
                 to: destinatario,
                 subject: asunto,
                 html: contenidoHTML
             };
 
             const info = await transporter.sendMail(opcionesCorreo);
-            console.log(`✅ Email enviado a ${destinatario} (Intento ${i + 1})`);
+            console.log(`✅ Email enviado vía SMTP a ${destinatario} (Intento ${i + 1})`);
             return info;
         } catch (error) {
-            console.error(`❌ Error al enviar email a ${destinatario} (Intento ${i + 1}):`, error.message);
-            if (i === intentos - 1) {
-                throw new Error(`Error al enviar email a ${destinatario} después de ${intentos} intentos: ${error.message}`);
+            console.error(`❌ Error SMTP (Intento ${i + 1}):`, error.message);
+
+            // Intentar Brevo como rescate inmediato ante error de red o último intento
+            if (process.env.BREVO_API_KEY) {
+                try {
+                    console.log('➡️ Cambiando a Brevo como fallback...');
+                    return await enviarViaBrevo({ destinatario, asunto, contenidoHTML });
+                } catch (brevoErr) {
+                    console.error('❌ Error en el fallback de Brevo:', brevoErr.message);
+                }
             }
 
-            // Esperar 2 segundos antes de reintentar
+            if (i === intentos - 1) {
+                throw new Error(`Error al enviar email tras ${intentos} intentos: ${error.message}`);
+            }
+
             await new Promise(resolve => setTimeout(resolve, 2000));
         }
     }
-}
-
-// Configuración del remitente
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'ponce.ap.332@gmail.com';
-const BARBERIA_NOMBRE = process.env.BARBERIA_NOMBRE || 'El Rey Barber';
-const BARBERIA_DIRECCION = process.env.BARBERIA_DIRECCION || 'Av. Bulnes 2676';
-const BARBERIA_TELEFONO = process.env.BARBERIA_TELEFONO || '351 740-4322';
-
+};
 
 
 

@@ -26,7 +26,8 @@ NODE_ENV=production
 DATABASE_URL=${MySQL.MYSQL_URL}
 JWT_SECRET=TU_JWT_SECRET_AQUI
 JWT_EXPIRES_IN=7d
-RESEND_API_KEY=tu_resend_api_key
+# Para emails por SMTP: configurar EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS
+# Para proveedor por API: configurar `BREVO_API_KEY`
 FROM_EMAIL=tu@email.com
 FRONTEND_URL=https://tu-frontend.vercel.app
 ```

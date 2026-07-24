@@ -33,7 +33,7 @@ cp .env.example .env
 # Editar .env con tus credenciales
 # - Configura tu base de datos MySQL
 # - Genera un JWT_SECRET seguro
-# - Agrega tu RESEND_API_KEY para emails
+# - Configura variables de email (SMTP o proveedor por API)
 ```
 
 ### 3. Configurar Frontend
@@ -116,15 +116,23 @@ AppBarberia/
 
 ## 📧 Configuración de Emails
 
-El sistema usa [Resend](https://resend.com) para enviar emails:
+El sistema soporta envío de emails por SMTP (Nodemailer) y por proveedores vía API (por ejemplo: Brevo).
 
-1. Crea una cuenta en https://resend.com
-2. Obtén tu API key
-3. Agrégala al archivo `.env`:
-   ```env
-   RESEND_API_KEY=re_tu_api_key_aqui
-   FROM_EMAIL=tu-email@dominio.com
-   ```
+Ejemplos de variables que puedes configurar en `.env`:
+```env
+# SMTP (Nodemailer)
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_SECURE=false
+EMAIL_USER=tu-email@dominio.com
+EMAIL_PASS=tu_password_o_app_password
+
+# O proveedor por API (Brevo)
+# BREVO_API_KEY=tu_clave_brevo
+# BREVO_SENDER_EMAIL=no-reply@tu-dominio.com
+# BREVO_SENDER_NAME="El Rey Barber"
+FROM_EMAIL=tu-email@dominio.com
+```
 
 ## 🛠️ Tecnologías
 
@@ -133,7 +141,7 @@ El sistema usa [Resend](https://resend.com) para enviar emails:
 - Sequelize (ORM)
 - MySQL
 - JWT (autenticación)
-- Resend (emails)
+- Emails: SMTP (Nodemailer) o proveedores por API (Brevo)
 
 **Frontend:**
 - React 19
