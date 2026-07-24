@@ -128,7 +128,7 @@ export default function TurnosPage() {
                     //disabledDays={deshabilitarFechasPasadas}
                     titulo="Seleccionar Fecha"
                 />
-
+ 
                 {/* Lista de turnos */}
                 <div className="lg:col-span-2">
                     <Card className="border-zinc-700/80 bg-zinc-900/95 shadow-xl shadow-black/30">

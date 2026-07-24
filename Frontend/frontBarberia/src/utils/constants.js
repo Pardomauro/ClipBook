@@ -100,13 +100,13 @@ export const HORARIOS_LABORALES = {
     // Viernes y Sábado: Corrido
     [DIAS_SEMANA.VIERNES]: { 
         rangos: [
-            { inicio: '10:00', fin: '21:30' }
+            { inicio: '10:00', fin: '22:00' }
         ], 
         activo: true 
     },
     [DIAS_SEMANA.SABADO]: { 
         rangos: [
-            { inicio: '10:00', fin: '21:30' }
+            { inicio: '10:00', fin: '22:00' }
         ], 
         activo: true 
     },
