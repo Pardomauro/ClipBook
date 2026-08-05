@@ -211,6 +211,7 @@ const enviarEmailConfirmacionTurno = async (turno) => {
             padding: 8px 0;
             display: flex;
             justify-content: space-between;
+            gap: 8px;
             border-bottom: 1px solid #e5e7eb;
         }
         .info-row:last-child {
@@ -247,20 +248,20 @@ const enviarEmailConfirmacionTurno = async (turno) => {
             
             <div class="info-box">
                 <div class="info-row">
-                    <span class="info-label">Fecha: </span>
-                    <span class="info-value"> ${fechaFormateada}</span>
+                    <span class="info-label">Fecha:</span>
+                    <span class="info-value">&nbsp;${fechaFormateada}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Hora: </span>
-                    <span class="info-value"> ${horaInicio} hs</span>
+                    <span class="info-label">Hora:</span>
+                    <span class="info-value">&nbsp;${horaInicio} hs</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Servicio: </span>
-                    <span class="info-value"> ${turno.servicio.nombre_servicio}</span>
+                    <span class="info-label">Servicio:</span>
+                    <span class="info-value">&nbsp;${turno.servicio.nombre_servicio}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Profesional: </span>
-                    <span class="info-value"> ${turno.barbero.nombre_completo}</span>
+                    <span class="info-label">Profesional:</span>
+                    <span class="info-value">&nbsp;${turno.barbero.nombre_completo}</span>
                 </div>
             </div>
             
@@ -367,6 +368,7 @@ const enviarEmailNuevoTurnoAdmin = async (turno) => {
             padding: 8px 0;
             display: flex;
             justify-content: space-between;
+            gap: 8px;
             border-bottom: 1px solid #e5e7eb;
         }
         .info-row:last-child {
@@ -413,36 +415,36 @@ const enviarEmailNuevoTurnoAdmin = async (turno) => {
             <div class="section-title">Información del Turno</div>
             <div class="info-box">
                 <div class="info-row">
-                    <span class="info-label">Fecha: </span>
-                    <span class="info-value"> ${fechaFormateada}</span>
+                    <span class="info-label">Fecha:</span>
+                    <span class="info-value">&nbsp;${fechaFormateada}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Hora: </span>
-                    <span class="info-value"> ${horaInicio} - ${horaFin} hs</span>
+                    <span class="info-label">Hora:</span>
+                    <span class="info-value">&nbsp;${horaInicio} - ${horaFin} hs</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Servicio: </span>
-                    <span class="info-value"> ${turno.servicio.nombre_servicio}</span>
+                    <span class="info-label">Servicio:</span>
+                    <span class="info-value">&nbsp;${turno.servicio.nombre_servicio}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Profesional: </span>
-                    <span class="info-value"> ${turno.barbero.nombre_completo}</span>
+                    <span class="info-label">Profesional:</span>
+                    <span class="info-value">&nbsp;${turno.barbero.nombre_completo}</span>
                 </div>
             </div>
             
             <div class="section-title">Información del Cliente</div>
             <div class="info-box">
                 <div class="info-row">
-                    <span class="info-label">Nombre: </span>
-                    <span class="info-value"> ${turno.cliente.nombre_completo}</span>
+                    <span class="info-label">Nombre:</span>
+                    <span class="info-value">&nbsp;${turno.cliente.nombre_completo}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Email: </span>
-                    <span class="info-value"> ${turno.cliente.email}</span>
+                    <span class="info-label">Email:</span>
+                    <span class="info-value">&nbsp;${turno.cliente.email}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Teléfono: </span>
-                    <span class="info-value"> ${turno.cliente.telefono || 'No registrado'}</span>
+                    <span class="info-label">Teléfono:</span>
+                    <span class="info-value">&nbsp;${turno.cliente.celular || 'No registrado'}</span>
                 </div>
             </div>
         </div>
@@ -531,6 +533,7 @@ const enviarEmailCancelacionTurno = async (turno) => {
             padding: 8px 0;
             display: flex;
             justify-content: space-between;
+            gap: 8px;
             border-bottom: 1px solid #e5e7eb;
         }
         .info-row:last-child {
@@ -567,16 +570,16 @@ const enviarEmailCancelacionTurno = async (turno) => {
             
             <div class="info-box">
                 <div class="info-row">
-                    <span class="info-label">Fecha: </span>
-                    <span class="info-value"> ${fechaFormateada}</span>
+                    <span class="info-label">Fecha:</span>
+                    <span class="info-value">&nbsp;${fechaFormateada}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Hora: </span>
-                    <span class="info-value"> ${horaInicio} hs</span>
+                    <span class="info-label">Hora:</span>
+                    <span class="info-value">&nbsp;${horaInicio} hs</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Servicio: </span>
-                    <span class="info-value"> ${turno.servicio.nombre_servicio}</span>
+                    <span class="info-label">Servicio:</span>
+                    <span class="info-value">&nbsp;${turno.servicio.nombre_servicio}</span>
                 </div>
             </div>
             
